@@ -1,6 +1,8 @@
 import request from "supertest";
+import dotenv from "dotenv";
 
-const BASE_URL = "http://localhost:8000";
+const PORT = process.env.PORT || 8000;
+const BASE_URL = `http://localhost:${PORT}`;
 
 describe('Test /health', () => {
     it('health should be okay', async () => {
