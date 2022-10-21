@@ -10,5 +10,5 @@ const PORT: number = appConfig.port;
 swaggerDocs(app, PORT);
 
 server.listen(PORT, () => {
-    logger.info(`Server listening on port ${PORT}.`);
+	logger.info(`Server listening on port ${PORT}.`);
 });

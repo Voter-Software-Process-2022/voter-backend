@@ -13,7 +13,7 @@ const router = express.Router();
  *     responses:
  *       200:
  *         description: App is up and running
-*/
+ */
 router.get("/", healthCheckHandler);
 
 export { router as healthRouter };
