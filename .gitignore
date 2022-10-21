@@ -142,3 +142,7 @@ dist
 .svelte-kit
 
 # End of https://www.toptal.com/developers/gitignore/api/node
+
+# Jest HTML Reporters
+jest_html_reporters.html
+jest-html-reporters-attach

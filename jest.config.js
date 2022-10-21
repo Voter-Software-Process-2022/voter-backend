@@ -17,4 +17,13 @@ module.exports = {
 		"src/(.*)": "<rootDir>/src/$1",
 	},
 	moduleDirectories: ["node_modules", "src"],
+	reporters: [
+		"default",
+		[
+			"jest-html-reporters",
+			{
+				pageTitle: "Test Report",
+			},
+		],
+	],
 };
