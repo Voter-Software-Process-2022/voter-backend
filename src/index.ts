@@ -1,17 +1,9 @@
-import express, { Response } from "express";
 import http from "http";
-import dotenv from "dotenv";
-dotenv.config()
+import { appConfig } from "@src/utils/config";
+import app from "@src/app";
 
-const app = express();
-const server = http.createServer(app);
+const server: http.Server = http.createServer(app);
 
-const PORT = process.env.PORT || 8000;
-
-app.get("/healthcheck", (_, res: Response) => {
-    res.send("Voter Backend");
-});
-
-server.listen(PORT, () => {
-    console.log(`server listening on port ${PORT}`);
+server.listen(appConfig.port, () => {
+    console.log(`Server listening on port ${appConfig.port}.`);
 });
