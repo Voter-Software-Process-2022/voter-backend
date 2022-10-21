@@ -1,7 +1,7 @@
-import express, { Application } from "express";
+import express, { Express } from "express";
 import { healthRouter } from "./routes/health.route";
 
-const app: Application = express();
+const app: Express = express();
 
 app.use(express.json());
 app.use("/health", healthRouter);

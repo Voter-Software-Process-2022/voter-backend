@@ -2,9 +2,9 @@ import dotenv from "dotenv";
 dotenv.config();
 
 export interface IAppConfig {
-    port: string | number;
+    port: number;
 }
 
 export const appConfig: IAppConfig = {
-    port: process.env.PORT || 8000
+    port: Number(process.env.PORT) || 8000
 };
