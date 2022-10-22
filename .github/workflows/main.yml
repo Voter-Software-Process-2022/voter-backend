@@ -13,7 +13,6 @@ concurrency:
 
 env:
   PORT: 5500
-  CODECOV_TOKEN: 7ef85dcd-e314-47c1-b50f-11a38df3a249
 
 jobs:
   lint:
@@ -70,3 +69,6 @@ jobs:
         run: npm run test:coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
