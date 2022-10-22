@@ -12,25 +12,6 @@ env:
   PORT: 5500
 
 jobs:
-  build:
-    name: Build
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [15.x, 16.x, 17.x, 18.x]
-    steps:
-      - uses: actions/checkout@v3
-      - run: mkdir -p artifact
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - run: npm ci
-      - run: npm run build --if-present
-      - uses: actions/upload-artifact@v3
-        with:
-          name: my-artifact
-          path: artifact # or path/to/artifact
   lint:
     name: Lint test
     runs-on: ubuntu-latest
@@ -39,7 +20,9 @@ jobs:
         node-version: [15.x, 16.x, 17.x, 18.x]
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/download-artifact@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
         with:
-          name: my-artifact
-      - run: npm test
+          node-version: ${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm run lint
