@@ -8,6 +8,15 @@ const options: swaggerJsdoc.Options = {
 		info: {
 			title: "Voter API Docs",
 			version: "1.0.0",
+			description: "This is REST API Application from Voter module, Software Process and Project Management 2022.",
+			contact: {
+				name: "Discord channel",
+				url: "https://discord.gg/5mFwh8EH",
+			},
+			license: {
+				name: "MIT License",
+				url: "https://www.mit.edu/~amini/LICENSE.md",
+			},
 		},
 		components: {
 			securitySchemas: {
