@@ -17,6 +17,7 @@ module.exports = {
 	parserOptions: {
 		ecmaVersion: "latest",
 		sourceType: "module",
+		project: ["./tsconfig.json"],
 	},
 	plugins: ["@typescript-eslint", "prettier", "import"],
 	rules: {
@@ -26,11 +27,7 @@ module.exports = {
 		"import/order": [
 			"error",
 			{
-				"new-line-between": "never",
-				groups: [
-					["builtin", "external"],
-					["internal", "parent", "sibling", "index"],
-				],
+				groups: ["external", "builtin", "internal", "sibling", "parent", "index"],
 			},
 		],
 	},
