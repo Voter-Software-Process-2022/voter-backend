@@ -1,17 +1,14 @@
-import express, { Response } from "express";
 import http from "http";
-import dotenv from "dotenv";
-dotenv.config()
+import { appConfig } from "@src/utils/config";
+import app from "@src/app";
+import logger from "@src/utils/logger";
+import swaggerDocs from "./utils/swagger";
 
-const app = express();
-const server = http.createServer(app);
+const server: http.Server = http.createServer(app);
+const PORT: number = appConfig.port;
 
-const PORT = process.env.PORT || 8000;
-
-app.get("/healthcheck", (_, res: Response) => {
-    res.send("Voter Backend");
-});
+swaggerDocs(app, PORT);
 
 server.listen(PORT, () => {
-    console.log(`server listening on port ${PORT}`);
+	logger.info(`Server listening on port ${PORT}.`);
 });
