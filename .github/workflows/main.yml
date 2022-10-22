@@ -13,6 +13,7 @@ concurrency:
 
 env:
   PORT: 5500
+  CODECOV_TOKEN: 7ef85dcd-e314-47c1-b50f-11a38df3a249
 
 jobs:
   lint:
