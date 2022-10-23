@@ -1,0 +1,30 @@
+name: Create Deta Micro
+
+on:
+  pull_request:
+    types: [opened, reopened]
+
+env:
+  BETA_SERVICE_NAME: ${{ github.head_ref }}-qa
+
+jobs:
+  create-micro:
+    name: Create new micro
+    runs-on: ubuntiu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Install Deta CLI as per docs
+      # https://docs.deta.sh/docs/cli/install
+      - name: Install Deta CLI
+        shell: bash
+        run: |
+          curl -fsSL https://get.deta.dev/cli.sh | sh
+      # Using the access token and existing Deta micro and project,
+      # creates a new Micro(server)
+      # https://docs.deta.sh/docs/cli/commands#deta-new
+      - name: Create a new micro
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ secrets.DETA_ACCESS_TOKEN }}
+          ~/.deta/bin/deta new --name ${{ env.BETA_SERVICE_NAME }} --project ${{ secrets.DETA_PROJECT }}
