@@ -1,14 +1,5 @@
 name: Production Deployment
 
-on:
-  workflow_run:
-    workflows: ["Tests"]
-    pull_request:
-      branches:
-        - main
-    types:
-      - completed
-
 env:
   BETA_SERVICE_NAME: ${{ github.head_ref }}-qa
 
@@ -23,6 +14,6 @@ jobs:
     steps:
       - name: Install Deta CLI
         uses: ./.github/workflows/deployment/deploy-beta.yml
-          with:
-            deta-name: ${{ env.BETA_SERVICE_NAME }}
-            deta-project: ${{ secrets.DETA_PROJECT }}
+        with:
+          deta-name: ${{ env.BETA_SERVICE_NAME }}
+          deta-project: ${{ secrets.DETA_PROJECT }}

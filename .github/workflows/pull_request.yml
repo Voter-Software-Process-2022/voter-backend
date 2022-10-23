@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [tests]
     steps:
-      - name: Install Deta CLI
+      - name: Deploy Beta version
         uses: ./.github/workflows/deploy-to-deta.yml
         with:
           deta-name: ${{ env.BETA_SERVICE_NAME }}
