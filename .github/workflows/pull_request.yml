@@ -16,4 +16,41 @@ jobs:
   tests:
     name: Tests
     uses: ./.github/workflows/tests.yml
-
+  deploy: 
+    name: Deploy to Deta
+    runs-on: ubuntu-latest
+    needs: [tests]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Install Deta CLI as per docs
+      # https://docs.deta.sh/docs/cli/install
+      - name: Install Deta CLI
+        shell: bash
+        run: |
+          curl -fsSL https://get.deta.dev/cli.sh | sh
+      # Using the access token and existing Deta micro and project,
+      # clone the micro and copy .deta metadata folder to use it in deploy
+      # https://docs.deta.sh/docs/cli/commands#deta-clone
+      - name: Clone Deta Metadata
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ secrets.DETA_ACCESS_TOKEN }}
+          ~/.deta/bin/deta clone --name ${{ env.BETA_SERVICE_NAME }} --project ${{ secrets.DETA_PROJECT }} tmp/
+          cp -r tmp/.deta .
+      # Using the access token, deploy the project to Deta
+      # https://docs.deta.sh/docs/cli/commands#deta-deploy
+      - name: Deploy to Deta
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ secrets.DETA_ACCESS_TOKEN }}
+          ~/.deta/bin/deta deploy
+      - name: Create .env file
+        uses: ./.github/workflows/env.yml
+      # Using the access token, deploy the project to Deta
+      # https://docs.deta.sh/docs/cli/commands#deta-deploy
+      - name: Update Environment variables
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ secrets.DETA_ACCESS_TOKEN }}
+          ~/.deta/bin/deta update -e .env
