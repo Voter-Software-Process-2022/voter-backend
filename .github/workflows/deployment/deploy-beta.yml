@@ -1,0 +1,19 @@
+name: Production Deployment
+
+env:
+  BETA_SERVICE_NAME: ${{ github.head_ref }}-qa
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy Beta
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Deta CLI
+        uses: ./.github/workflows/deployment/deploy-beta.yml
+        with:
+          deta-name: ${{ env.BETA_SERVICE_NAME }}
+          deta-project: ${{ secrets.DETA_PROJECT }}

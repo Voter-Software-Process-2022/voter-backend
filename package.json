@@ -9,7 +9,8 @@
 		"test:watch": "jest --watch",
 		"test:coverage": "jest --coverage",
 		"start:prod": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/index.js",
-		"build": "npx tsc"
+		"build": "npx tsc",
+		"lint": "eslint --color --ext .ts \"src/**/*.+(ts)\""
 	},
 	"repository": {
 		"type": "git",
@@ -34,7 +35,7 @@
 		"eslint": "^8.25.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-config-standard-with-typescript": "^23.0.0",
-		"eslint-import-resolver-typescript": "^3.5.1",
+		"eslint-import-resolver-typescript": "^3.5.2",
 		"eslint-plugin-import": "^2.26.0",
 		"eslint-plugin-n": "^15.3.0",
 		"eslint-plugin-prettier": "^4.2.1",

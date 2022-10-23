@@ -6,5 +6,5 @@ export interface IAppConfig {
 }
 
 export const appConfig: IAppConfig = {
-	port: Number(process.env.PORT) || 8000,
+	port: Number(process.env.PORT) ?? 8000,
 };
