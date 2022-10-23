@@ -1,5 +1,0 @@
-name: Values for CI/CD
-description: Environment variables manager for CI/CD
-
-env:
-  TEST_KEY: test-value

@@ -1,11 +1,11 @@
 name: Production Deployment
 
-on:
-  workflow_run:
-    workflows: ["Tests"]
-    pull_request:
-    types:
-      - completed
+# on:
+#   workflow_run:
+#     workflows: ["Tests"]
+#     pull_request:
+#     types:
+#       - completed
 
 env:
   BETA_SERVICE_NAME: ${{ github.event.repository.name }}-pr-${{ github.event.number }}
