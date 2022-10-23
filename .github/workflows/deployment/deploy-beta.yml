@@ -1,11 +1,11 @@
 name: Production Deployment
 
-# on:
-#   workflow_run:
-#     workflows: ["Tests"]
-#     pull_request:
-#     types:
-#       - completed
+on:
+  workflow_run:
+    workflows: ["Tests"]
+    pull_request:
+    types:
+      - completed
 
 env:
   BETA_SERVICE_NAME: ${{ github.head_ref }}-qa
@@ -20,25 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install Deta CLI
-        shell: bash
-        run: |
-          curl -fsSL https://get.deta.dev/cli.sh | sh
-      - name: Clone Deta Metadata
-        shell: bash
-        run: |
-          export DETA_ACCESS_TOKEN=${{ secrets.DETA_TOKEN }}
-          cd ./src
-          ~/.deta/bin/deta clone --name ${{ env.BETA_SERVICE_NAME }} --project ${{ secrets.DETA_PROJECT }} tmp/
-          cp -r tmp/.deta .
-      - name: Deploy to Deta
-        shell: bash
-        run: |
-          export DETA_ACCESS_TOKEN=${{ secrets.DETA_TOKEN }}
-          cd ./src
-          ~/.deta/bin/deta deploy
-      - name: Make envfile
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_WEBHOOK_ID: ${{secrets.WEBHOOK_ID}}
-          envkey_WEBHOOK_TOKEN: ${{secrets.WEBHOOK_TOKEN}}
-          envkey_HEALTHCHECK_NAME: ${{env.text}}
+        uses: ./.github/workflows/deployment/deploy-beta.yml
+          with:
+            deta-name: ${{ env.BETA_SERVICE_NAME }}
+            deta-project: ${{ secrets.DETA_PROJECT }}

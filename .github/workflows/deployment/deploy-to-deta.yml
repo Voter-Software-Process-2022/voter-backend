@@ -4,10 +4,10 @@ description: Automation to deploy to Deta
 inputs:
   deta-access-token:
     description: "Deta access token"
-    default: ${{ secrets.DETA_TOKEN }}
+    default: ${{ secrets.DETA_ACCESS_TOKEN }}
   deta-name:
     description: "Deta micro name"
-    default: ${{ github.event.repository.name }}
+    required: true
   deta-project:
     description: "Deta project name"
     default: "default"
@@ -42,6 +42,8 @@ runs:
         export DETA_ACCESS_TOKEN=${{ inputs.deta-access-token }}
         cd ${{ inputs.deta-project-dir }}
         ~/.deta/bin/deta deploy
+    - name: Create .env file
+      uses: ./.github/workflows/env.yml
     # Using the access token, deploy the project to Deta
     # https://docs.deta.sh/docs/cli/commands#deta-deploy
     - name: Update Environment variables
