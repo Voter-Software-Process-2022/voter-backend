@@ -1,4 +1,4 @@
-name: Beta CI/CD
+name: Beta CICD
 
 on:
   workflow_run:
@@ -6,6 +6,7 @@ on:
     types:
       - completed
   pull_request:
+    types: [edited, synchronize]
     branches:
       - main
 

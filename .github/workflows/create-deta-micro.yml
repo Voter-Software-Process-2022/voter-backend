@@ -3,6 +3,8 @@ name: Create Deta Micro
 on:
   pull_request:
     types: [opened, reopened]
+    branches:
+      - main
 
 env:
   BETA_SERVICE_NAME: ${{ github.head_ref }}-qa
