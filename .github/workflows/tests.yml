@@ -3,10 +3,6 @@ name: Tests
 on:
   workflow_call:
 
-concurrency:
-  group: ${{ github.ref_name }}
-  cancel-in-progress: true
-
 jobs:
   lint:
     name: Lint Test
