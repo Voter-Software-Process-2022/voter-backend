@@ -23,6 +23,6 @@ jobs:
     steps:
       - name: Install Deta CLI
         uses: ./.github/workflows/deploy-to-deta.yml
-          with:
-            deta-name: ${{ env.BETA_SERVICE_NAME }}
-            deta-project: ${{ secrets.DETA_PROJECT }}
+        with:
+          deta-name: ${{ env.BETA_SERVICE_NAME }}
+          deta-project: ${{ secrets.DETA_PROJECT }}
