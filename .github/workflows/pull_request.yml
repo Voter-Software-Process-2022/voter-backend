@@ -18,7 +18,7 @@ jobs:
     uses: ./.github/workflows/tests.yml
   deploy:
     name: Deploy Beta
-    uses: ./.github/workflows/deploy-to-deta.yml
+    uses: ./.github/workflows/deploy-to-deta.yml@main
     with:
       deta-name: ${{ env.BETA_SERVICE_NAME }}
       deta-project: ${{ secrets.DETA_PROJECT }}
