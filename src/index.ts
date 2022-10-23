@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV === 'development') {
+	require('dotenv').config();
+}
 import http from "http";
 import { appConfig } from "@src/utils/config";
 import app from "@src/app";
