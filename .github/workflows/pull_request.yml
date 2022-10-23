@@ -1,6 +1,10 @@
 name: Beta CI/CD
 
 on:
+  workflow_run:
+    workflows: ['Create Deta Micro']
+    types:
+      - completed
   pull_request:
     branches:
       - main
