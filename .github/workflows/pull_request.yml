@@ -2,7 +2,7 @@ name: Beta CICD
 
 on:
   workflow_run:
-    workflows: ['Create Deta Micro']
+    workflows: ["Create Deta Micro"]
     types:
       - completed
   pull_request:
