@@ -1,0 +1,13 @@
+name: Create .env file
+description: Create an environment variables file
+
+on:
+  push:
+
+jobs:
+  echo-env:
+    name: Print env
+    runs-on: ubuntu-latest
+    steps:
+      - name: Echo env
+        run: echo "${{ env.TEST_KEY }}"
