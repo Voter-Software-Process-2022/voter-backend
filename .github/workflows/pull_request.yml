@@ -18,7 +18,10 @@ jobs:
     uses: ./.github/workflows/tests.yml
   deploy:
     name: Deploy Beta
-    uses: ./.github/workflows/deploy-to-deta.yml
-      with:
-        deta-name: ${{ env.BETA_SERVICE_NAME }}
-        deta-project: ${{ secrets.DETA_PROJECT }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Deta CLI
+        uses: ./.github/workflows/deployment/deploy-beta.yml
+          with:
+            deta-name: ${{ env.BETA_SERVICE_NAME }}
+            deta-project: ${{ secrets.DETA_PROJECT }}
