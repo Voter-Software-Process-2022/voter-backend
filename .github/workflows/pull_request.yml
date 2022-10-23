@@ -1,0 +1,24 @@
+name: Beta CI/CD
+
+on:
+  pull_request:
+    branches:
+      - main
+
+concurrency:
+  group: ${{ github.ref_name }}
+  cancel-in-progress: true
+
+env:
+  BETA_SERVICE_NAME: ${{ github.head_ref }}-qa
+
+jobs:
+  tests:
+    name: Tests
+    uses: ./.github/workflows/tests.yml
+  deploy:
+    name: Deploy Beta
+    uses: ./.github/workflows/deploy-to-deta.yml
+      with:
+        deta-name: ${{ env.BETA_SERVICE_NAME }}
+        deta-project: ${{ secrets.DETA_PROJECT }}

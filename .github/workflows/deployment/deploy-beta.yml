@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows: ["Tests"]
     pull_request:
+      branches:
+        - main
     types:
       - completed
 
