@@ -1,5 +1,4 @@
 name: Create .env file
-description: Create an environment variables file
 
 on:
   push:
