@@ -1,54 +1,59 @@
 name: Deta Deployment
-description: Automation to deploy to Deta
 
-inputs:
-  deta-access-token:
-    description: "Deta access token"
-    default: ${{ secrets.DETA_ACCESS_TOKEN }}
-  deta-name:
-    description: "Deta micro name"
-    required: true
-  deta-project:
-    description: "Deta project name"
-    default: "default"
-  deta-project-dir:
-    description: "Directory of the project"
-    default: "."
+on:
+  workflow_call:
+    inputs:
+      deta-access-token:
+        description: "Deta access token"
+        default: ${{ secrets.DETA_ACCESS_TOKEN }}
+      deta-name:
+        description: "Deta micro name"
+        required: true
+      deta-project:
+        description: "Deta project name"
+        default: "default"
+      deta-project-dir:
+        description: "Directory of the project"
+        default: "."
 
-runs:
-  using: "composite"
-  steps:
-    # Install Deta CLI as per docs
-    # https://docs.deta.sh/docs/cli/install
-    - name: Install Deta CLI
-      shell: bash
-      run: |
-        curl -fsSL https://get.deta.dev/cli.sh | sh
-    # Using the access token and existing Deta micro and project,
-    # clone the micro and copy .deta metadata folder to use it in deploy
-    # https://docs.deta.sh/docs/cli/commands#deta-clone
-    - name: Clone Deta Metadata
-      shell: bash
-      run: |
-        export DETA_ACCESS_TOKEN=${{ inputs.deta-access-token }}
-        cd ${{ inputs.deta-project-dir }}
-        ~/.deta/bin/deta clone --name ${{ inputs.deta-name }} --project ${{ inputs.deta-project }} tmp/
-        cp -r tmp/.deta .
-    # Using the access token, deploy the project to Deta
-    # https://docs.deta.sh/docs/cli/commands#deta-deploy
-    - name: Deploy to Deta
-      shell: bash
-      run: |
-        export DETA_ACCESS_TOKEN=${{ inputs.deta-access-token }}
-        cd ${{ inputs.deta-project-dir }}
-        ~/.deta/bin/deta deploy
-    - name: Create .env file
-      uses: ./.github/workflows/env.yml
-    # Using the access token, deploy the project to Deta
-    # https://docs.deta.sh/docs/cli/commands#deta-deploy
-    - name: Update Environment variables
-      shell: bash
-      run: |
-        export DETA_ACCESS_TOKEN=${{ inputs.deta-access-token }}
-        cd ${{ inputs.deta-project-dir }}
-        ~/.deta/bin/deta update -e .env
+jobs:
+  deploy: 
+    name: Deploy to Deta
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      # Install Deta CLI as per docs
+      # https://docs.deta.sh/docs/cli/install
+      - name: Install Deta CLI
+        shell: bash
+        run: |
+          curl -fsSL https://get.deta.dev/cli.sh | sh
+      # Using the access token and existing Deta micro and project,
+      # clone the micro and copy .deta metadata folder to use it in deploy
+      # https://docs.deta.sh/docs/cli/commands#deta-clone
+      - name: Clone Deta Metadata
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ inputs.deta-access-token }}
+          cd ${{ inputs.deta-project-dir }}
+          ~/.deta/bin/deta clone --name ${{ inputs.deta-name }} --project ${{ inputs.deta-project }} tmp/
+          cp -r tmp/.deta .
+      # Using the access token, deploy the project to Deta
+      # https://docs.deta.sh/docs/cli/commands#deta-deploy
+      - name: Deploy to Deta
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ inputs.deta-access-token }}
+          cd ${{ inputs.deta-project-dir }}
+          ~/.deta/bin/deta deploy
+      - name: Create .env file
+        uses: ./.github/workflows/env.yml
+      # Using the access token, deploy the project to Deta
+      # https://docs.deta.sh/docs/cli/commands#deta-deploy
+      - name: Update Environment variables
+        shell: bash
+        run: |
+          export DETA_ACCESS_TOKEN=${{ inputs.deta-access-token }}
+          cd ${{ inputs.deta-project-dir }}
+          ~/.deta/bin/deta update -e .env
