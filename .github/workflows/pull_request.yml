@@ -16,11 +16,4 @@ jobs:
   tests:
     name: Tests
     uses: ./.github/workflows/tests.yml
-  deploy:
-    permissions:
-      contents: read
-      pull-requests: write
-    uses: ./.github/workflows/deploy-to-deta.yml
-    with:
-      deta-name: ${{ env.BETA_SERVICE_NAME }}
-      deta-project: ${{ secrets.DETA_PROJECT }}
+
