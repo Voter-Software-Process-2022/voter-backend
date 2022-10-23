@@ -30,3 +30,7 @@ jobs:
         run: |
           export DETA_ACCESS_TOKEN=${{ secrets.DETA_ACCESS_TOKEN }}
           ~/.deta/bin/deta new --name ${{ env.BETA_SERVICE_NAME }} --project ${{ secrets.DETA_PROJECT }}
+  deploy-micro:
+    name: First Deployment
+    uses: ./.github/workflows/pull_request.yml
+    secrets: inherit
