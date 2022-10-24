@@ -1,9 +1,7 @@
 name: Beta CICD
 
 on:
-  workflow_call:
   pull_request:
-    types: [edited, synchronize]
     branches:
       - main
 
