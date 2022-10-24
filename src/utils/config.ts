@@ -18,8 +18,8 @@ export const appConfig: IAppConfig = {
 };
 
 export const customEnvironmentVariables = {
-    dbName: 'MONGODB_USERNAME',
-    dbPass: 'MONGODB_PASSWORD',
-    accessTokenPrivateKey: 'ACCESS_TOKEN_PRIVATE_KEY',
-    accessTokenPublicKey: 'ACCESS_TOKEN_PUBLIC_KEY',
-  };
+    dbName: String(process.env.MONGODB_USERNAME),
+    dbPass: String(process.env.MONGODB_PASSWORD),
+    accessTokenPrivateKey: String(process.env.ACCESS_TOKEN_PRIVATE_KEY),
+    accessTokenPublicKey: String(process.env.ACCESS_TOKEN_PUBLIC_KEY),
+};

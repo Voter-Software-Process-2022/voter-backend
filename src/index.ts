@@ -1,11 +1,10 @@
-if (process.env.NODE_ENV === 'development') {
-	require('dotenv').config();
-}
+import dotenv from "dotenv";
 import http from "http";
 import { appConfig } from "@src/utils/config";
 import app from "@src/app";
 import logger from "@src/utils/logger";
 import swaggerDocs from "./utils/swagger";
+dotenv.config();
 
 const server: http.Server = http.createServer(app);
 const PORT: number = appConfig.port;
