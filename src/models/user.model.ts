@@ -8,6 +8,7 @@ import {
 } from '@typegoose/typegoose';
 import bcrypt from 'bcryptjs';
 
+@index({ citizenID: 1 })
 @pre<User>('save', async function () {
     if (!this.isModified('laserCode')) return;
 
