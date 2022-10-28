@@ -33,6 +33,8 @@ export const registerHandler = async (
     const user = await createUser({
         citizenID: req.body.citizenID,
         laserCode: req.body.laserCode,
+        email: req.body.email,
+        password: req.body.password,
     });
 
     res.status(201).json({
@@ -54,12 +56,12 @@ export const loginHandler = async (
 ) => {
   try {
     // Get the user from the collection
-    const user = await findUser({ citizenID: req.body.citizenID });
+    const user = await findUser({ email: req.body.email });
 
     // Check if user exist and password is correct
     if (
       !user ||
-      !(await user.comparePasswords(user.laserCode, req.body.laserCode))
+      !(await user.comparePasswords(user.password, req.body.password))
     ) {
       return next(new AppError('Invalid email or password', 401));
     }
