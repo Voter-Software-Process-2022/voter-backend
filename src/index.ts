@@ -5,7 +5,6 @@ import app from '@src/app'
 import logger from '@src/utils/logger'
 import swaggerDocs from './utils/swagger'
 import connectDB from './utils/connectDB'
-import { connectRedis } from './utils/connectRedis'
 dotenv.config()
 
 const server: http.Server = http.createServer(app)
@@ -16,5 +15,4 @@ swaggerDocs(app, PORT)
 server.listen(PORT, async () => {
   logger.info(`Server listening on port ${PORT}.`)
   await connectDB()
-  await connectRedis()
 })
