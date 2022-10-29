@@ -1,4 +1,4 @@
-import { tokenEnvironmentVariables } from '@src/utils/config'
+import { appConfig } from '@src/utils/config'
 import { CookieOptions, NextFunction, Request, Response } from 'express'
 import { CreateUserInput, LoginUserInput } from '../schemas/user.schema'
 import { createUser, findUser, signToken } from '../services/user.service'
@@ -9,7 +9,7 @@ import logger from '../utils/logger'
 export const excludedFields = ['password']
 
 const accessTokenExpiresIn: number =
-  tokenEnvironmentVariables.accessTokenExpiresIn
+  appConfig.accessTokenExpiresIn
 
 // Cookie options
 const accessTokenCookieOptions: CookieOptions = {

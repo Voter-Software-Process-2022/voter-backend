@@ -3,6 +3,8 @@ dotenv.config()
 
 export interface IAppConfig {
   port: number
+  accessTokenExpiresIn: number,
+  origin: string,
 }
 
 export interface EnvironmentVariables {
@@ -12,12 +14,10 @@ export interface EnvironmentVariables {
   accessTokenPublicKey: string
 }
 
-export interface TokenEnvironmentVariables {
-  accessTokenExpiresIn: number
-}
-
 export const appConfig: IAppConfig = {
   port: Number(process.env.PORT) ?? 8000,
+  accessTokenExpiresIn: Number(process.env.ACCESS_TOKEN_EXPIRES_IN) ?? 15,
+  origin: String(process.env.ORIGIN) ?? 'http://localhost:3000',
 }
 
 export const customEnvironmentVariables: EnvironmentVariables = {
@@ -25,8 +25,4 @@ export const customEnvironmentVariables: EnvironmentVariables = {
   dbPass: String(process.env.MONGODB_PASSWORD),
   accessTokenPrivateKey: String(process.env.ACCESS_TOKEN_PRIVATE_KEY),
   accessTokenPublicKey: String(process.env.ACCESS_TOKEN_PUBLIC_KEY),
-}
-
-export const tokenEnvironmentVariables: TokenEnvironmentVariables = {
-  accessTokenExpiresIn: Number(process.env.ACCESS_TOKEN_EXPIRES_IN) ?? 10,
 }

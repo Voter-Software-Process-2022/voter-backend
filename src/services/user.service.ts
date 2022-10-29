@@ -1,4 +1,4 @@
-import { tokenEnvironmentVariables } from '@src/utils/config'
+import { appConfig } from '@src/utils/config'
 import { omit } from 'lodash'
 import { FilterQuery, QueryOptions } from 'mongoose'
 import userModel, { User } from '../models/user.model'
@@ -8,7 +8,7 @@ import redisClient from '../utils/connectRedis'
 import { DocumentType } from '@typegoose/typegoose'
 
 const accessTokenExpiresIn: number =
-  tokenEnvironmentVariables.accessTokenExpiresIn
+  appConfig.accessTokenExpiresIn
 
 // CreateUser service
 export const createUser = async (input: Partial<User>) => {
