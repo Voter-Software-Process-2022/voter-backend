@@ -1,7 +1,7 @@
 import http from "http";
-import { appConfig } from "@src/utils/config";
-import app from "@src/app";
-import logger from "@src/utils/logger";
+import { appConfig } from "./utils/config";
+import app from "./app";
+import logger from "./utils/logger";
 import swaggerDocs from "./utils/swagger";
 
 const server: http.Server = http.createServer(app);

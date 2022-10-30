@@ -1,8 +1,9 @@
-name: Production CI/CD
+name: Production CICD
 
 on:
-  branches:
-    - main
+  push:
+    branches:
+      - main
 
 concurrency:
   group: ${{ github.ref_name }}
