@@ -1,4 +1,4 @@
-import { appConfig, IAppConfig } from "@src/utils/config";
+import { appConfig, IAppConfig } from "../config";
 import dotenv from "dotenv";
 
 dotenv.config();
