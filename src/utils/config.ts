@@ -1,10 +1,10 @@
-import dotenv from "dotenv";
-dotenv.config();
+import dotenv from 'dotenv'
+dotenv.config()
 
 export interface IAppConfig {
-	port: number;
+  port: number
 }
 
 export const appConfig: IAppConfig = {
-	port: Number(process.env.PORT) ?? 8000,
-};
+  port: Number(process.env.PORT) ?? 8000,
+}
