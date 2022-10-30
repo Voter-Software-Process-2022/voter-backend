@@ -11,7 +11,8 @@
     "start:prod": "node -r ts-node/register/transpile-only -r tsconfig-paths/register ./dist/src/index.js",
     "build": "npx tsc",
     "lint": "eslint --color --ext .ts \"src/**/*.+(ts)\"",
-    "format": "prettier --write \"src/**/*.+(ts)\" --config ./.prettierrc"
+    "format": "prettier --write \"src/**/*.+(ts)\" --config ./.prettierrc",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -48,7 +49,8 @@
     "ts-jest": "^29.0.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.1.0",
-    "typescript": "^4.8.4"
+    "typescript": "^4.8.4",
+    "husky": "^8.0.0"
   },
   "dependencies": {
     "dayjs": "^1.11.6",
