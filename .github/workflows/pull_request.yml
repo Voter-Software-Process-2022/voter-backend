@@ -1,4 +1,4 @@
-name: Beta CI/CD
+name: Pull Request CI
 
 on:
   pull_request:
@@ -10,15 +10,30 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  BETA_SERVICE_NAME: ${{ github.head_ref }}-qa
+  VERCEL_ACCESS_TOKEN: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
 
 jobs:
   tests:
     name: Tests
     uses: ./.github/workflows/tests.yml
   deploy:
-    name: Deploy Beta
-    uses: ./.github/workflows/deploy-to-deta.yml
-    with:
-      deta-name: ${{ env.BETA_SERVICE_NAME }}
-      deta-project: ${{ secrets.DETA_PROJECT }}
+    runs-on: ubuntu-latest
+    needs: [tests]
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Deploy Beta
+        id: deploy
+        run: echo "url=$(vercel --token=${{ env.VERCEL_ACCESS_TOKEN }})" >> $GITHUB_OUTPUT
+      - name: Notify update in PR
+        uses: thollander/actions-comment-pull-request@v1
+        if: success()
+        with:
+          message: |
+            New beta version for this Pull Request has been released
+            Service URL: ${{ steps.deploy.outputs.url }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

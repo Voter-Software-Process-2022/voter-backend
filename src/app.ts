@@ -1,4 +1,4 @@
-import { appConfig } from '@src/utils/config'
+import { appConfig } from './utils/config'
 import express, { Express, json, NextFunction, Request, Response } from 'express'
 import cookieParser from 'cookie-parser';
 import cors from 'cors';

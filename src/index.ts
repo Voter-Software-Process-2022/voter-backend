@@ -1,8 +1,8 @@
 import dotenv from 'dotenv'
 import http from 'http'
 import { appConfig } from './utils/config'
-import app from '@src/app'
-import logger from '@src/utils/logger'
+import app from './app'
+import logger from './utils/logger'
 import swaggerDocs from './utils/swagger'
 import connectDB from './utils/connectDB'
 dotenv.config()
