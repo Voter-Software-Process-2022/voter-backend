@@ -12,6 +12,7 @@ module.exports = {
 		"plugin:import/errors",
 		"plugin:import/warnings",
 		"plugin:import/typescript",
+		"prettier",
 	],
 	overrides: [],
 	parserOptions: {
@@ -21,7 +22,20 @@ module.exports = {
 	},
 	plugins: ["@typescript-eslint", "prettier", "import"],
 	rules: {
-		"prettier/prettier": "error",
+		"prettier/prettier": [
+			"warn",
+			{},
+			{
+				properties: {
+					usePrettierrc: true,
+				},
+			},
+		],
+		"@typescript-eslint/strict-boolean-expressions": "off",
+		"eslint-disable-next-line @typescript-eslint/ban-types": "off",
+		"@typescript-eslint/explicit-function-return-type": "off",
+		"@typescript-eslint/no-misused-promises": "off",
+		"@typescript-eslint/no-explicit-any": "off",
 		"no-console": "off",
 	},
 	settings: {
