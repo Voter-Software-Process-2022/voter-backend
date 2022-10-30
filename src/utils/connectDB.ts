@@ -1,9 +1,9 @@
-import { customEnvironmentVariables } from '@src/utils/config'
+import { dbEnvironmentVariables } from '@src/utils/config'
 import mongoose from 'mongoose'
 import logger from '@src/utils/logger'
 
-const dbName: string = customEnvironmentVariables.dbName
-const dbPass: string = customEnvironmentVariables.dbPass
+const dbName: string = dbEnvironmentVariables.dbName
+const dbPass: string = dbEnvironmentVariables.dbPass
 
 const uri = `mongodb+srv://${dbName}:${dbPass}@voter-software-process.hrewxlq.mongodb.net/?retryWrites=true&w=majority`
 

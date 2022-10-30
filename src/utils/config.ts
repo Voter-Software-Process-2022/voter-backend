@@ -7,11 +7,17 @@ export interface IAppConfig {
   origin: string,
 }
 
-export interface EnvironmentVariables {
+export interface DBEnvironmentVariables {
   dbName: string
   dbPass: string
   accessTokenPrivateKey: string
   accessTokenPublicKey: string
+}
+
+export interface RedisEnvironmentVariables {
+  host: string
+  port: string
+  password: string
 }
 
 export const appConfig: IAppConfig = {
@@ -20,9 +26,15 @@ export const appConfig: IAppConfig = {
   origin: String(process.env.ORIGIN) ?? 'http://localhost:3000',
 }
 
-export const customEnvironmentVariables: EnvironmentVariables = {
+export const dbEnvironmentVariables: DBEnvironmentVariables = {
   dbName: String(process.env.MONGODB_USERNAME),
   dbPass: String(process.env.MONGODB_PASSWORD),
   accessTokenPrivateKey: String(process.env.ACCESS_TOKEN_PRIVATE_KEY),
   accessTokenPublicKey: String(process.env.ACCESS_TOKEN_PUBLIC_KEY),
+}
+
+export const redisEnvironmentVariables: RedisEnvironmentVariables = {
+  host: String(process.env.REDIS_HOSTNAME),
+  port: String(process.env.REDIS_PORT),
+  password: String(process.env.REDIS_PASSWORD)
 }
