@@ -6,6 +6,7 @@ import { excludedFields } from '../controllers/auth.controller'
 import { signJwt } from '../utils/jwt'
 import redisClient from '../utils/connectRedis'
 import { DocumentType } from '@typegoose/typegoose'
+import logger from '@src/utils/logger'
 
 const accessTokenExpiresIn: number =
   appConfig.accessTokenExpiresIn
@@ -46,9 +47,12 @@ export const signToken = async (user: DocumentType<User>) => {
   )
 
   // Create a Session
-  await redisClient.set(user._id, JSON.stringify(user), {
-    EX: 60 * 60,
-  })
+  try {
+    await redisClient.set(user._id, JSON.stringify(user))
+    await redisClient.expire(user._id, 60 * 60)
+  } catch (err) {
+    logger.info(err)
+  }
 
   // Return access token
   return { accessToken }
