@@ -5,7 +5,7 @@ import logger from '@src/utils/logger'
 const dbName: string = customEnvironmentVariables.dbName
 const dbPass: string = customEnvironmentVariables.dbPass
 
-const uri = `mongodb+srv://${dbName}:${dbPass}@voter-software-process.l03pvct.mongodb.net/?retryWrites=true&w=majority`
+const uri = `mongodb+srv://${dbName}:${dbPass}@voter-software-process.hrewxlq.mongodb.net/?retryWrites=true&w=majority`
 
 async function connectDB() {
   try {
