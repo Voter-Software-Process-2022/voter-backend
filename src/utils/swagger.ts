@@ -1,10 +1,10 @@
-import { Express, Request, Response } from 'express'
 import swaggerJsdoc from 'swagger-jsdoc'
-import { serve, setup } from 'swagger-ui-express'
+import { appConfig } from './config'
 import logger from './logger'
 
 const options: swaggerJsdoc.Options = {
   definition: {
+    openapi: '3.0.0',
     info: {
       title: 'Voter API Docs',
       version: '1.0.0',
@@ -20,38 +20,31 @@ const options: swaggerJsdoc.Options = {
       },
     },
     components: {
-      securitySchemas: {
+      securitySchemes: {
         bearerAuth: {
-          type: 'http',
+          type: 'apiKey',
+          name: 'Authorization',
+          in: 'header',
           scheme: 'bearer',
           bearerFormat: 'JWT',
         },
       },
     },
-    securityDefinitions: {
-      ApiAuthKey: {
-        type: 'apiKey',
-        name: 'Authorization',
-        in: 'header',
+    servers: [
+      {
+        url: `http://localhost:${appConfig.port}/api`,
+        description: 'Development server',
       },
-    },
+    ],
   },
-  apis: ['./src/routes/*.ts'],
+  apis: ['./src/routes/*.ts', './src/schemas/*.ts'],
 }
 
 const swaggerSpec = swaggerJsdoc(options)
 
-function swaggerDocs(app: Express, port: number): void {
-  // Swagger page
-  app.use('/docs', serve, setup(swaggerSpec))
-
-  // Docs in JSON format
-  app.get('/docs.json', (req: Request, res: Response) => {
-    res.setHeader('Content-Type', 'application/json')
-    res.send(swaggerSpec)
-  })
-
-  logger.info(`Docs available at http://localhost:${port}/docs`)
+function swaggerDocs() {
+  logger.info(`Docs available at http://localhost:${appConfig.port}/docs`)
+  return swaggerSpec
 }
 
 export default swaggerDocs

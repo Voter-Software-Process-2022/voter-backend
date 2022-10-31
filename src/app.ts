@@ -11,10 +11,14 @@ import cors from 'cors'
 import { healthRouter } from './routes/health.route'
 import userRouter from './routes/user.route'
 import authRouter from './routes/auth.route'
+import swaggerDocs from './utils/swagger'
+import { serve, setup } from 'swagger-ui-express'
 
 const app: Express = express()
 
 const ORIGIN: string = appConfig.origin
+
+const docs = swaggerDocs()
 
 app.use(json({ limit: '10kb' }))
 app.use(cookieParser())
@@ -29,6 +33,13 @@ app.use(
 app.use('/health', healthRouter)
 app.use('/api/users', userRouter)
 app.use('/api/auth', authRouter)
+
+app.use('/docs', serve, setup(docs))
+
+app.get('/docs.json', (req: Request, res: Response) => {
+  res.setHeader('Content-Type', 'application/json')
+  res.send(docs)
+})
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   const err = new Error(`Route ${req.originalUrl} not found`) as any
