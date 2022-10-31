@@ -10,10 +10,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version-file: '.nvmrc'
       - name: Install yarn
         run: npm install --global yarn
       - name: Install Dependencies
@@ -26,10 +26,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version-file: '.nvmrc'
       - name: Install yarn
         run: npm install --global yarn
       - name: Install Dependencies
@@ -42,14 +42,16 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version-file: '.nvmrc'
+      - name: Install yarn
+        run: npm install --global yarn
       - name: Install Dependencies
-        run: npm install
+        run: yarn install --frozen-lockfile
       - name: Run tests and collect coverage
-        run: npm run test:coverage
+        run: yarn test:coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
