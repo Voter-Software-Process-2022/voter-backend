@@ -30,7 +30,7 @@ app.use(
   }),
 )
 
-app.use('/health', healthRouter)
+app.use('/api/health', healthRouter)
 app.use('/api/users', userRouter)
 app.use('/api/auth', authRouter)
 
