@@ -18,6 +18,7 @@ export interface RedisEnvironmentVariables {
   host: string
   port: string
   password: string
+  url: string
 }
 
 export const appConfig: IAppConfig = {
@@ -37,4 +38,5 @@ export const redisEnvironmentVariables: RedisEnvironmentVariables = {
   host: String(process.env.REDIS_HOSTNAME),
   port: String(process.env.REDIS_PORT),
   password: String(process.env.REDIS_PASSWORD),
+  url: String(process.env.REDIS_URL),
 }

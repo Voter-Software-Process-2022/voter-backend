@@ -2,10 +2,8 @@ import { redisEnvironmentVariables } from '../utils/config'
 import { createClient } from 'redis'
 import logger from './logger'
 
-const redisUrl = `redis://:${redisEnvironmentVariables.password}@${redisEnvironmentVariables.host}:${redisEnvironmentVariables.port}`
-
 const redisClient = createClient({
-  url: redisUrl,
+  url: redisEnvironmentVariables.url,
 })
 
 export const connectRedis = async () => {
