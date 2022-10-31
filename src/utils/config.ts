@@ -16,7 +16,7 @@ export interface DBEnvironmentVariables {
 
 export interface RedisEnvironmentVariables {
   host: string
-  port: string
+  port: number
   password: string
   url: string
 }
@@ -36,7 +36,7 @@ export const dbEnvironmentVariables: DBEnvironmentVariables = {
 
 export const redisEnvironmentVariables: RedisEnvironmentVariables = {
   host: String(process.env.REDIS_HOSTNAME),
-  port: String(process.env.REDIS_PORT),
+  port: Number(process.env.REDIS_PORT),
   password: String(process.env.REDIS_PASSWORD),
   url: String(process.env.REDIS_URL),
 }
