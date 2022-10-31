@@ -49,8 +49,8 @@ export const signToken = async (user: DocumentType<User>) => {
 
   // Create a Session
   try {
-    await redisClient.set(JSON.stringify(user._id), JSON.stringify(user))
-    await redisClient.expire(JSON.stringify(user._id), 60 * 60)
+    await redisClient.set(String(user._id), JSON.stringify(user))
+    await redisClient.expire(String(user._id), 60 * 60)
   } catch (err) {
     logger.info(err)
   }
