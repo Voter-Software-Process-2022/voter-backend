@@ -1,29 +1,11 @@
 /** @type {import('ts-jest').JestConfigWithTsJest} */
-
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
   coverageDirectory: 'coverage',
-  collectCoverageFrom: ['src/**/*.{js,ts}'],
-  coverageThreshold: {
-    global: {
-      branches: 0,
-      functions: 0,
-      lines: 0,
-      statements: 0,
-    },
+  transform: {
+    '^.+\\tsx?$': 'ts-jest',
   },
-  moduleNameMapper: {
-    'src/(.*)': '<rootDir>/src/$1',
-  },
-  moduleDirectories: ['node_modules', 'src'],
-  reporters: [
-    'default',
-    [
-      'jest-html-reporters',
-      {
-        pageTitle: 'Test Report',
-      },
-    ],
-  ],
+  testRegex: '(/tests/(unit|integration)/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$',
+  moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx', 'json', 'node'],
 }
