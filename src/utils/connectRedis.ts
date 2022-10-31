@@ -6,12 +6,11 @@ const password = redisEnvironmentVariables.password
 const host = redisEnvironmentVariables.host
 const port = redisEnvironmentVariables.port
 
-
 const redisClient = createClient({
-  url: `redis://:${password}@${host}:${port}`
+  url: `redis://:${password}@${host}:${port}`,
 })
 
-const connectRedis = async () => {
+export const connectRedis = async () => {
   try {
     await redisClient.connect()
     logger.info('Redis client connected...')
@@ -21,10 +20,8 @@ const connectRedis = async () => {
   }
 }
 
-connectRedis();
-
 redisClient.on('error', (err) => {
   logger.error(err)
-});
+})
 
 export default redisClient

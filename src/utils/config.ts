@@ -3,8 +3,8 @@ dotenv.config()
 
 export interface IAppConfig {
   port: number
-  accessTokenExpiresIn: number,
-  origin: string,
+  accessTokenExpiresIn: number
+  origin: string
 }
 
 export interface DBEnvironmentVariables {
@@ -36,5 +36,5 @@ export const dbEnvironmentVariables: DBEnvironmentVariables = {
 export const redisEnvironmentVariables: RedisEnvironmentVariables = {
   host: String(process.env.REDIS_HOSTNAME),
   port: String(process.env.REDIS_PORT),
-  password: String(process.env.REDIS_PASSWORD)
+  password: String(process.env.REDIS_PASSWORD),
 }

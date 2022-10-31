@@ -8,8 +8,7 @@ import redisClient from '../utils/connectRedis'
 import { DocumentType } from '@typegoose/typegoose'
 import logger from '@src/utils/logger'
 
-const accessTokenExpiresIn: number =
-  appConfig.accessTokenExpiresIn
+const accessTokenExpiresIn: number = appConfig.accessTokenExpiresIn
 
 // CreateUser service
 export const createUser = async (input: Partial<User>) => {
@@ -25,7 +24,8 @@ export const findUserById = async (id: string) => {
 
 // Find All users
 export const findAllUsers = async () => {
-  return await userModel.find()
+  const users = await userModel.find()
+  return users
 }
 
 // Find one user by any fields
@@ -33,7 +33,8 @@ export const findUser = async (
   query: FilterQuery<User>,
   options: QueryOptions = {},
 ) => {
-  return await userModel.findOne(query, {}, options).select('+password')
+  const user = await userModel.findOne(query, {}, options).select('+password')
+  return user
 }
 
 // Sign Token
@@ -48,12 +49,12 @@ export const signToken = async (user: DocumentType<User>) => {
 
   // Create a Session
   try {
-    await redisClient.set(`${user._id}`, JSON.stringify(user))
-    await redisClient.expire(`${user._id}`, 60 * 60)
+    await redisClient.set(JSON.stringify(user._id), JSON.stringify(user))
+    await redisClient.expire(JSON.stringify(user._id), 60 * 60)
   } catch (err) {
     logger.info(err)
   }
 
-  // Return access token
+  // Return access token›
   return { accessToken }
 }

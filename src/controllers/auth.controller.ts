@@ -8,8 +8,7 @@ import logger from '../utils/logger'
 // Exclude this fields from the response
 export const excludedFields = ['password']
 
-const accessTokenExpiresIn: number =
-  appConfig.accessTokenExpiresIn
+const accessTokenExpiresIn: number = appConfig.accessTokenExpiresIn
 
 // Cookie options
 const accessTokenCookieOptions: CookieOptions = {
