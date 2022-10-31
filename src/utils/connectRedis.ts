@@ -1,6 +1,6 @@
-import { redisEnvironmentVariables } from '@src/utils/config'
+import { redisEnvironmentVariables } from '../utils/config'
 import { createClient } from 'redis'
-import logger from '@src/utils/logger'
+import logger from './logger'
 
 const password = redisEnvironmentVariables.password
 const host = redisEnvironmentVariables.host

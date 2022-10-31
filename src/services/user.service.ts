@@ -1,4 +1,4 @@
-import { appConfig } from '@src/utils/config'
+import { appConfig } from '..//utils/config'
 import { omit } from 'lodash'
 import { FilterQuery, QueryOptions } from 'mongoose'
 import userModel, { User } from '../models/user.model'
@@ -6,7 +6,7 @@ import { excludedFields } from '../controllers/auth.controller'
 import { signJwt } from '../utils/jwt'
 import redisClient from '../utils/connectRedis'
 import { DocumentType } from '@typegoose/typegoose'
-import logger from '@src/utils/logger'
+import logger from '../utils/logger'
 
 const accessTokenExpiresIn: number = appConfig.accessTokenExpiresIn
 

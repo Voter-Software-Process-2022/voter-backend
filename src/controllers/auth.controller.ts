@@ -1,4 +1,4 @@
-import { appConfig } from '@src/utils/config'
+import { appConfig } from '../utils/config'
 import { CookieOptions, NextFunction, Request, Response } from 'express'
 import { CreateUserInput, LoginUserInput } from '../schemas/user.schema'
 import { createUser, findUser, signToken } from '../services/user.service'

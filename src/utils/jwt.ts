@@ -1,5 +1,5 @@
 import { sign, verify, SignOptions } from 'jsonwebtoken'
-import { dbEnvironmentVariables } from '@src/utils/config'
+import { dbEnvironmentVariables } from './config'
 
 export const signJwt = (
   payload: string | Buffer | object,

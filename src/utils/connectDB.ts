@@ -1,6 +1,6 @@
-import { dbEnvironmentVariables } from '@src/utils/config'
+import { dbEnvironmentVariables } from './config'
 import mongoose from 'mongoose'
-import logger from '@src/utils/logger'
+import logger from './logger'
 
 const dbName: string = dbEnvironmentVariables.dbName
 const dbPass: string = dbEnvironmentVariables.dbPass
