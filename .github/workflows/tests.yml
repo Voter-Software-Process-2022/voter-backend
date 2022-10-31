@@ -46,12 +46,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - name: Install yarn
-        run: npm install --global yarn
       - name: Install Dependencies
-        run: yarn install --frozen-lockfile
+        run: npm ci
       - name: Run tests and collect coverage
-        run: yarn test:coverage
+        run: npm run test:coverage
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
         with:
