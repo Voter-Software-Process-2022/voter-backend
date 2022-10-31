@@ -10,10 +10,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version-file: '.nvmrc'
       - name: Install yarn
         run: npm install --global yarn
       - name: Install Dependencies
@@ -26,26 +26,26 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version-file: '.nvmrc'
       - name: Install yarn
         run: npm install --global yarn
       - name: Install Dependencies
         run: yarn install --frozen-lockfile
-      - name: Perform Unit Test
-        run: yarn test
+      - name: Execute Unit Test
+        run: yarn test:unit
   coverage:
     name: Coverage Test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Use Node.js 16.x
-        uses: actions/setup-node@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
         with:
-          node-version: 16.x
+          node-version-file: '.nvmrc'
       - name: Install yarn
         run: npm install --global yarn
       - name: Install Dependencies

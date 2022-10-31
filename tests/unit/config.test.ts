@@ -1,10 +1,12 @@
-import { appConfig, IAppConfig } from '../config'
+import { appConfig, IAppConfig } from '../../src/utils/config'
 import dotenv from 'dotenv'
 
 dotenv.config()
 
 const config: IAppConfig = {
   port: Number(process.env.PORT) ?? 8000,
+  accessTokenExpiresIn: 0,
+  origin: '',
 }
 
 describe('Test load config from .env', () => {
