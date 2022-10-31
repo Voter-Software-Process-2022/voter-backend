@@ -1,9 +1,9 @@
 import { appConfig } from '../utils/config'
-import { CookieOptions, NextFunction, Request, Response } from 'express'
+import { CookieOptions, Request, Response } from 'express'
 import { CreateUserInput, LoginUserInput } from '../schemas/user.schema'
 import { createUser, findUser, signToken } from '../services/user.service'
-import AppError from '../utils/appError'
 import logger from '../utils/logger'
+import { errorResponse } from '../schemas/resposne.schema'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']
@@ -25,7 +25,6 @@ if (process.env.NODE_ENV === 'production')
 export const registerHandler = async (
   req: Request<Record<string, never>, Record<string, never>, CreateUserInput>,
   res: Response,
-  next: NextFunction,
 ): Promise<void> => {
   try {
     const user = await createUser({
@@ -37,21 +36,18 @@ export const registerHandler = async (
 
     res.status(201).json({
       status: 'success',
-      data: {
-        user,
-      },
+      user,
     })
   } catch (err: any) {
-    logger.info(err.code)
-    next(err)
+    logger.error(err.message)
+    res.status(500).json(errorResponse(err.message))
   }
 }
 
 export const loginHandler = async (
   req: Request<Record<string, never>, Record<string, never>, LoginUserInput>,
   res: Response,
-  next: NextFunction,
-): Promise<void> => {
+) => {
   try {
     // Get the user from the collection
     const user = await findUser({ email: req.body.email })
@@ -61,7 +57,8 @@ export const loginHandler = async (
       !user ||
       !(await user.comparePasswords(user.password, req.body.password))
     ) {
-      return next(new AppError('Invalid email or password', 401))
+      return res.status(401).json(errorResponse('Invalid email or password'))
+      // return next(new AppError('Invalid email or password', 401))
     }
 
     // Create an Access Token
@@ -80,6 +77,7 @@ export const loginHandler = async (
       accessToken,
     })
   } catch (err: any) {
-    next(err)
+    logger.error(err.message)
+    res.status(500).json(errorResponse(err.message))
   }
 }
