@@ -11,8 +11,12 @@ const router = Router()
  *     - Healthcheck
  *     description: Responds if the app is up and running
  *     responses:
- *       200:
- *         description: App is up and running
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/MessageResponse'
  */
 router.get('/', healthCheckHandler)
 

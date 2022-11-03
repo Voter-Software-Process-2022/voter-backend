@@ -1,33 +1,23 @@
-import { NextFunction, Request, Response } from 'express'
+import { errorResponse } from '../schemas/resposne.schema'
+import { Request, Response } from 'express'
 import { findAllUsers } from '../services/user.service'
 
-export const getMeHandler = (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): void => {
+export const getMeHandler = (req: Request, res: Response) => {
   try {
     const user = res.locals.user
-    console.log(user)
-    res.status(200).json({
+    return res.status(200).json({
       status: 'success',
-      data: {
-        user,
-      },
+      user,
     })
   } catch (err: any) {
-    next(err)
+    return res.status(500).json(errorResponse(err.message))
   }
 }
 
-export const getAllUsersHandler = async (
-  req: Request,
-  res: Response,
-  next: NextFunction,
-): Promise<void> => {
+export const getAllUsersHandler = async (req: Request, res: Response) => {
   try {
     const users = await findAllUsers()
-    res.status(200).json({
+    return res.status(200).json({
       status: 'success',
       result: users.length,
       data: {
@@ -35,6 +25,6 @@ export const getAllUsersHandler = async (
       },
     })
   } catch (err: any) {
-    next(err)
+    return res.status(500).json(errorResponse(err.message))
   }
 }

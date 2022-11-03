@@ -1,5 +1,77 @@
 import { object, string, TypeOf } from 'zod'
 
+/**
+ * @openapi
+ * components:
+ *  schemas:
+ *    User:
+ *      type: object
+ *      properties:
+ *        citizenID:
+ *          type: string
+ *        laserCode:
+ *          type: string
+ *        email:
+ *          type: string
+ *        _id:
+ *          type: string
+ *        createdAt:
+ *          type: string
+ *        updatedAt:
+ *          type: string
+ *    CreateUserInput:
+ *      type: object
+ *      required:
+ *        - citizenID
+ *        - laserCode
+ *        - email
+ *        - password
+ *        - passwordConfirmation
+ *      properties:
+ *        citizenID:
+ *          type: string
+ *          default: 1111111111111
+ *        laserCode:
+ *          type: string
+ *          default: AZ1111111111
+ *        email:
+ *          type: string
+ *          default: jane.doe@example.com
+ *        password:
+ *          type: string
+ *          default: stringPassword123
+ *        passwordConfirmation:
+ *          type: string
+ *          default: stringPassword123
+ *    CreateUserResponse:
+ *      type: object
+ *      properties:
+ *        status:
+ *          type: string
+ *        user:
+ *          type: object
+ *          $ref: '#/components/schemas/User'
+ *    LoginUserInput:
+ *      type: object
+ *      required:
+ *        - email
+ *        - password
+ *      properties:
+ *        email:
+ *          type: string
+ *          default: jane.doe@example.com
+ *        password:
+ *          type: string
+ *          default: stringPassword123
+ *    LoginUserResponse:
+ *      type: object
+ *      properties:
+ *        status:
+ *          type: string
+ *        accessToken:
+ *          type: string
+ */
+
 export const createUserSchema = object({
   body: object({
     citizenID: string({ required_error: 'CitizenID is required' })
