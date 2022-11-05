@@ -61,7 +61,6 @@
     "tsconfig-paths": "^4.1.0",
     "typescript": "^4.8.4",
     "husky": "^8.0.0",
-    "pino": "^8.7.0",
     "pino-pretty": "^9.1.1"
   },
   "dependencies": {
@@ -77,6 +76,7 @@
     "lodash": "^4.17.21",
     "mongodb": "^4.11.0",
     "mongoose": "^6.6.7",
+    "pino": "^8.7.0",
     "redis": "^4.3.1",
     "swagger-jsdoc": "^6.2.5",
     "swagger-ui-express": "^4.5.0",
