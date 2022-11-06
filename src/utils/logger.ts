@@ -1,20 +1,15 @@
 import pino from 'pino'
-import pretty, { PrettyOptions } from 'pino-pretty'
+import pretty from 'pino-pretty'
 import dayjs from 'dayjs'
 
-// const log = pino({
-//   transport: {
-//     target: 'pino-pretty',
-//     options: {
-//       colorize: true,
-//     },
-//   },
-//   base: {
-//     pid: false,
-//   },
-//   timestamp: () => `,"time":"${dayjs().format()}"`,
-// })
-
-const log = pino(pretty())
+const log = pino(
+  pretty({
+    colorize: true,
+    ignore: 'pid',
+    customPrettifiers: {
+      time: () => `,"time":"${dayjs().format()}"`,
+    },
+  }),
+)
 
 export default log
