@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 dotenv.config()
 
 const config: IAppConfig = {
-  port: Number(process.env.PORT) ?? 8000,
+  port: Number(process.env.PORT ?? 8000),
   accessTokenExpiresIn: 0,
   origin: '',
 }
