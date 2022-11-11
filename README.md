@@ -2,6 +2,9 @@
 
 ## About The Project
 
+![Tests](https://github.com/Voter-Software-Process-2022/voter-backend/actions/workflows/tests.yml/badge.svg)
+[![codecov](https://codecov.io/gh/Voter-Software-Process-2022/voter-backend/branch/main/graph/badge.svg?token=E5LKK421GB)](https://codecov.io/gh/Voter-Software-Process-2022/voter-backend)
+
 Backend for Voter module, act as a middleware to communicate between other modules.
 
 ### Built With
