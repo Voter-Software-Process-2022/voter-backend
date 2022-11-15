@@ -1,7 +1,7 @@
+import { moduleHosts } from '@src/utils/config'
 import axios, { AxiosResponse } from 'axios'
 
-// TODO: Define Election Committee host url
-const ELECTION_COMMITTEE_HOST = ''
+const ELECTION_COMMITTEE_HOST = moduleHosts.electionCommittee
 
 export interface CandidateResponse {
   id: number

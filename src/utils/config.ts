@@ -21,6 +21,11 @@ export interface RedisEnvironmentVariables {
   url: string
 }
 
+export interface IModuleHosts {
+  government: string
+  electionCommittee: string
+}
+
 export const appConfig: IAppConfig = {
   port: Number(process.env.PORT) ?? 8000,
   accessTokenExpiresIn: Number(process.env.ACCESS_TOKEN_EXPIRES_IN) ?? 15,
@@ -39,4 +44,9 @@ export const redisEnvironmentVariables: RedisEnvironmentVariables = {
   port: Number(process.env.REDIS_PORT),
   password: String(process.env.REDIS_PASSWORD),
   url: String(process.env.REDIS_URL),
+}
+
+export const moduleHosts: IModuleHosts = {
+  government: process.env.GOVERNMENT_HOST ?? '',
+  electionCommittee: process.env.ELECTION_COMMITTEE_HOST ?? '',
 }

@@ -1,7 +1,7 @@
+import { moduleHosts } from '@src/utils/config'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
-// TODO: Define Government host url
-const GOVERNMENT_HOST = ''
+const GOVERNMENT_HOST = moduleHosts.government
 
 export interface UserInformationApiResponse {
   CitizensID: string
