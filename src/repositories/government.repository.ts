@@ -1,4 +1,4 @@
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 // TODO: Define Government host url
 const GOVERNMENT_HOST = ''
@@ -31,7 +31,9 @@ export interface AuthenticationApiResponse {
   token: string
 }
 
-export const GetUserInformationApiAsync = async (token: string) => {
+export const GetUserInformationApiAsync = async (
+  token: string,
+): Promise<AxiosResponse<UserInformationApiResponse>> => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
@@ -71,7 +73,7 @@ export const ValidateUserApiAsync = async (
 export const AuthenticationApiAsync = async (
   citizenId: string,
   laserId: string,
-) => {
+): Promise<AxiosResponse<AuthenticationApiResponse>> => {
   const body = {
     CitizenID: citizenId,
     LaserID: laserId,
