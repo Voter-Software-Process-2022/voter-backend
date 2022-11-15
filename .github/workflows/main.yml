@@ -9,7 +9,21 @@ concurrency:
   group: ${{ github.ref_name }}
   cancel-in-progress: true
 
+env:
+  VERCEL_ACCESS_TOKEN: ${{ secrets.VERCEL_ACCESS_TOKEN }}
+  VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+  VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+
 jobs:
   tests:
     uses: ./.github/workflows/tests.yml
-  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: [tests]
+    steps:
+      - uses: actions/checkout@v3
+        name: Checkout
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+      - name: Deploy Production
+        run: vercel --prod --token=${{ env.VERCEL_ACCESS_TOKEN }}
