@@ -5,9 +5,9 @@ import dayjs from 'dayjs'
 const log = pino(
   pretty({
     colorize: true,
-    ignore: 'pid',
+    ignore: 'pid,hostname',
     customPrettifiers: {
-      time: () => `,"time":"${dayjs().format()}"`,
+      time: () => `[${dayjs().format()}]`,
     },
   }),
 )
