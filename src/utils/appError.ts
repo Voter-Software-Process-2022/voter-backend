@@ -16,8 +16,8 @@ export class LoginError extends Error {
   isOperational: boolean
 
   constructor() {
-    super("Invalid citizen ID/Laser ID");
-    this.status = "400"
+    super('Invalid citizen ID/Laser ID')
+    this.status = '400'
     this.isOperational = true
   }
 }

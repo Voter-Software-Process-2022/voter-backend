@@ -69,8 +69,7 @@ export const loginWithGov = async (
   laserId: string,
 ): Promise<AuthenticationApiResponse> => {
   const response = await AuthenticationApiAsync(citizenId, laserId)
-  if (response.status == 200) return response.data
-  else if (response.status == 400)
-    throw new LoginError()
+  if (response.status === 200) return response.data
+  else if (response.status === 400) throw new LoginError()
   else throw new Error('Unknown response from Government')
 }

@@ -99,8 +99,8 @@ export const loginHandlerV2 = async (
   try {
     // TODO: Remove this bypass after connected with Government
     if (
-      req.body.citizenId == '1234567890123' &&
-      req.body.laserId == 'JT9999999999'
+      req.body.citizenId === '1234567890123' &&
+      req.body.laserId === 'JT9999999999'
     )
       return res.status(200).json({
         token:
@@ -108,7 +108,7 @@ export const loginHandlerV2 = async (
       })
     else throw new LoginError()
     // const response = await loginWithGov(req.body.citizenId, req.body.laserId)
-    //return res.status(200).json(response)
+    // return res.status(200).json(response)
   } catch (e: any) {
     if (e instanceof LoginError) return res.status(400).json(null)
     else return res.status(500).json(errorResponse(e.message))
