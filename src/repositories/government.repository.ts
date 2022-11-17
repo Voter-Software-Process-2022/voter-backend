@@ -1,4 +1,4 @@
-import { moduleHosts } from '@src/utils/config'
+import { moduleHosts } from '../utils/config'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 
 const GOVERNMENT_HOST = moduleHosts.government

@@ -13,7 +13,7 @@ import {
 } from '../services/user.service'
 import logger from '../utils/logger'
 import { errorResponse } from '../schemas/resposne.schema'
-import { LoginError } from '@src/utils/appError'
+import { LoginError } from '../utils/appError'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']

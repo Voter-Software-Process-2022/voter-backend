@@ -1,4 +1,4 @@
-import { moduleHosts } from '@src/utils/config'
+import { moduleHosts } from '../utils/config'
 import axios, { AxiosResponse } from 'axios'
 
 const ELECTION_COMMITTEE_HOST = moduleHosts.electionCommittee

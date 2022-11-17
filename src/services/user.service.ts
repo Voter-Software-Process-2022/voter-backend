@@ -10,8 +10,8 @@ import logger from '../utils/logger'
 import {
   AuthenticationApiAsync,
   AuthenticationApiResponse,
-} from '@src/repositories/government.repository'
-import { LoginError } from '@src/utils/appError'
+} from '../repositories/government.repository'
+import { LoginError } from '../utils/appError'
 
 const accessTokenExpiresIn: number = appConfig.accessTokenExpiresIn
 
