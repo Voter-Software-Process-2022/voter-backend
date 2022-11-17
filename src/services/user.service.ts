@@ -7,6 +7,11 @@ import { signJwt } from '../utils/jwt'
 import redisClient from '../utils/connectRedis'
 import { DocumentType } from '@typegoose/typegoose'
 import logger from '../utils/logger'
+import {
+  AuthenticationApiAsync,
+  AuthenticationApiResponse,
+} from '@src/repositories/government.repository'
+import { LoginError } from '@src/utils/appError'
 
 const accessTokenExpiresIn: number = appConfig.accessTokenExpiresIn
 
@@ -57,4 +62,15 @@ export const signToken = async (user: DocumentType<User>) => {
 
   // Return access token›
   return { accessToken }
+}
+
+export const loginWithGov = async (
+  citizenId: string,
+  laserId: string,
+): Promise<AuthenticationApiResponse> => {
+  const response = await AuthenticationApiAsync(citizenId, laserId)
+  if (response.status == 200) return response.data
+  else if (response.status == 400)
+    throw new LoginError()
+  else throw new Error('Unknown response from Government')
 }

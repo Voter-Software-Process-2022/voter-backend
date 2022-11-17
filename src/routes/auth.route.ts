@@ -1,7 +1,15 @@
 import { Router } from 'express'
-import { loginHandler, registerHandler } from '../controllers/auth.controller'
+import {
+  loginHandler,
+  loginHandlerV2,
+  registerHandler,
+} from '../controllers/auth.controller'
 import { validate } from '../middleware/validate'
-import { createUserSchema, loginUserSchema } from '../schemas/user.schema'
+import {
+  createUserSchema,
+  loginUserSchema,
+  loginUserSchemaV2,
+} from '../schemas/user.schema'
 
 const router = Router()
 
@@ -69,10 +77,40 @@ const router = Router()
  *          application/json:
  *            schema:
  *              $ref: '#/components/schemas/ErrorResponse'
+ * '/auth/login/v2':
+ *  post:
+ *     tags:
+ *     - Auth
+ *     summary: Login with Gov
+ *     description: Login with Government API
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *              $ref: '#/components/schemas/LoginUserInputV2'
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/LoginUserResponseV2'
+ *      400:
+ *        description: Bad request
+ *      500:
+ *        description: Internal Server Error
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ErrorResponse'
  */
 router.post('/register', validate(createUserSchema), registerHandler)
 
 // Login user route
 router.post('/login', validate(loginUserSchema), loginHandler)
+
+// Login with Gov
+router.post('/login/v2', validate(loginUserSchemaV2), loginHandlerV2)
 
 export default router

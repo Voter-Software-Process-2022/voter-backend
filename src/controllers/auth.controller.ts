@@ -1,9 +1,19 @@
 import { appConfig } from '../utils/config'
 import { CookieOptions, Request, Response } from 'express'
-import { CreateUserInput, LoginUserInput } from '../schemas/user.schema'
-import { createUser, findUser, signToken } from '../services/user.service'
+import {
+  CreateUserInput,
+  LoginUserInput,
+  LoginUserInputV2,
+} from '../schemas/user.schema'
+import {
+  createUser,
+  findUser,
+  loginWithGov,
+  signToken,
+} from '../services/user.service'
 import logger from '../utils/logger'
 import { errorResponse } from '../schemas/resposne.schema'
+import { LoginError } from '@src/utils/appError'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']
@@ -79,5 +89,28 @@ export const loginHandler = async (
   } catch (err: any) {
     logger.error(err.message)
     res.status(500).json(errorResponse(err.message))
+  }
+}
+
+export const loginHandlerV2 = async (
+  req: Request<Record<string, never>, Record<string, never>, LoginUserInputV2>,
+  res: Response,
+) => {
+  try {
+    // TODO: Remove this bypass after connected with Government
+    if (
+      req.body.citizenId == '1234567890123' &&
+      req.body.laserId == 'JT9999999999'
+    )
+      return res.status(200).json({
+        token:
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDaXRpemVuSUQiOiIxMjM0NTY3ODkwMTIzIiwiZXhwIjoxNjY4NjkzODQwLCJpYXQiOjE2Njg2OTIwNDAsImlzcyI6IldvcmtXb3JrV29ya1RlYW0gR292ZXJubWVudCBNb2R1bGUifQ.n3J4hOTFUNHZ5BRMLoPYJB_IpdhaZz6df3ivx1K1j4U',
+      })
+    else throw new LoginError()
+    // const response = await loginWithGov(req.body.citizenId, req.body.laserId)
+    //return res.status(200).json(response)
+  } catch (e: any) {
+    if (e instanceof LoginError) return res.status(400).json(null)
+    else return res.status(500).json(errorResponse(e.message))
   }
 }
