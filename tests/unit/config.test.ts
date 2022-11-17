@@ -7,6 +7,7 @@ const config: IAppConfig = {
   port: Number(process.env.PORT ?? 8000),
   accessTokenExpiresIn: 0,
   origin: '',
+  useMock: false
 }
 
 describe('Test load config from .env', () => {
