@@ -5,6 +5,7 @@ export interface IAppConfig {
   port: number
   accessTokenExpiresIn: number
   origin: string
+  useMock: boolean
 }
 
 export interface DBEnvironmentVariables {
@@ -30,6 +31,7 @@ export const appConfig: IAppConfig = {
   port: Number(process.env.PORT ?? 8000),
   accessTokenExpiresIn: Number(process.env.ACCESS_TOKEN_EXPIRES_IN ?? 15),
   origin: String(process.env.ORIGIN) ?? 'http://localhost:8000',
+  useMock: Boolean(process.env.USE_MOCK ?? false)
 }
 
 export const dbEnvironmentVariables: DBEnvironmentVariables = {

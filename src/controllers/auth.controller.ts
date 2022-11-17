@@ -97,18 +97,19 @@ export const loginHandlerV2 = async (
   res: Response,
 ) => {
   try {
-    // TODO: Remove this bypass after connected with Government
-    if (
-      req.body.citizenId === '1234567890123' &&
-      req.body.laserId === 'JT9999999999'
-    )
-      return res.status(200).json({
-        token:
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDaXRpemVuSUQiOiIxMjM0NTY3ODkwMTIzIiwiZXhwIjoxNjY4NjkzODQwLCJpYXQiOjE2Njg2OTIwNDAsImlzcyI6IldvcmtXb3JrV29ya1RlYW0gR292ZXJubWVudCBNb2R1bGUifQ.n3J4hOTFUNHZ5BRMLoPYJB_IpdhaZz6df3ivx1K1j4U',
-      })
-    else throw new LoginError()
-    // const response = await loginWithGov(req.body.citizenId, req.body.laserId)
-    // return res.status(200).json(response)
+    if (appConfig.useMock) {
+      if (
+        req.body.citizenId === '1234567890123' &&
+        req.body.laserId === 'JT9999999999'
+      )
+        return res.status(200).json({
+          token:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJDaXRpemVuSUQiOiIxMjM0NTY3ODkwMTIzIiwiZXhwIjoxNjY4NjkzODQwLCJpYXQiOjE2Njg2OTIwNDAsImlzcyI6IldvcmtXb3JrV29ya1RlYW0gR292ZXJubWVudCBNb2R1bGUifQ.n3J4hOTFUNHZ5BRMLoPYJB_IpdhaZz6df3ivx1K1j4U',
+        })
+      else throw new LoginError()
+    }
+    const response = await loginWithGov(req.body.citizenId, req.body.laserId)
+    return res.status(200).json(response)
   } catch (e: any) {
     if (e instanceof LoginError) return res.status(400).json(null)
     else return res.status(500).json(errorResponse(e.message))
