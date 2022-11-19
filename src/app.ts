@@ -16,7 +16,7 @@ import { serve, setup } from 'swagger-ui-express'
 
 const app: Express = express()
 
-const ORIGIN: string = appConfig.origin
+const ORIGIN = appConfig.origin
 
 const docs = swaggerDocs()
 

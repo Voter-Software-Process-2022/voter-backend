@@ -41,7 +41,7 @@ ACCESS_TOKEN_PRIVATE_KEY=
 ACCESS_TOKEN_PUBLIC_KEY=
 
 ACCESS_TOKEN_EXPIRES_IN=
-ORIGIN=
+ORIGINS=http://localhost,^.*$
 ```
 Ask any contributor to get some help
 

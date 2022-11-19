@@ -1,10 +1,24 @@
 import dotenv from 'dotenv'
 dotenv.config()
 
+const getAllowedOrigin = (): Array<string | RegExp> | undefined => {
+  if (process.env.ORIGINS === undefined) return undefined
+  const originsEnv: string[] = process.env.ORIGINS.split(',')
+  const allowedOrigins: Array<string | RegExp> = []
+  originsEnv.forEach((origin) => {
+    if (origin.startsWith('^') && origin.endsWith('$')) {
+      allowedOrigins.push(new RegExp(origin))
+    } else {
+      allowedOrigins.push(origin)
+    }
+  })
+  return allowedOrigins
+}
+
 export interface IAppConfig {
   port: number
   accessTokenExpiresIn: number
-  origin: string
+  origin: Array<string | RegExp>
   useMock: boolean
 }
 
@@ -30,7 +44,7 @@ export interface IModuleHosts {
 export const appConfig: IAppConfig = {
   port: Number(process.env.PORT ?? 8000),
   accessTokenExpiresIn: Number(process.env.ACCESS_TOKEN_EXPIRES_IN ?? 15),
-  origin: String(process.env.ORIGIN) ?? 'http://localhost:8000',
+  origin: getAllowedOrigin() ?? ['http://localhost:8000'],
   useMock: Boolean(process.env.USE_MOCK ?? false),
 }
 
