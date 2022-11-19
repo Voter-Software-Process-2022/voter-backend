@@ -18,7 +18,7 @@ const getAllowedOrigin = (): Array<string | RegExp> | undefined => {
 export interface IAppConfig {
   port: number
   accessTokenExpiresIn: number
-  origin: Array<string | RegExp>
+  origins: Array<string | RegExp>
   useMock: boolean
 }
 
@@ -44,7 +44,7 @@ export interface IModuleHosts {
 export const appConfig: IAppConfig = {
   port: Number(process.env.PORT ?? 8000),
   accessTokenExpiresIn: Number(process.env.ACCESS_TOKEN_EXPIRES_IN ?? 15),
-  origin: getAllowedOrigin() ?? ['http://localhost:8000'],
+  origins: getAllowedOrigin() ?? ['http://localhost:8000'],
   useMock: Boolean(process.env.USE_MOCK ?? false),
 }
 
