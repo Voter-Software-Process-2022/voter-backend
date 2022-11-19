@@ -1,11 +1,6 @@
-import {
-  candidateHandler,
-  candidatesHandler,
-  topicsHandler,
-  voteHandler,
-} from '@src/controllers/vote.controller'
-import { deserializeUser } from '@src/middleware/deserializeUser'
-import { requireUser } from '@src/middleware/requireUser'
+import { voteHandler } from '../controllers/vote.controller'
+import { deserializeUser } from '../middleware/deserializeUser'
+import { requireUser } from '../middleware/requireUser'
 import { Router } from 'express'
 
 const router = Router()
@@ -36,8 +31,5 @@ router.use(deserializeUser, requireUser)
  *        description: Unauthorized. User not authenticated
  */
 router.post('/submit', voteHandler)
-router.get('/candidates', candidatesHandler)
-router.get('/candidate/:candidateId', candidateHandler)
-router.get('/topics', topicsHandler)
 
 export default router
