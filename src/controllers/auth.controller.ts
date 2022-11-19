@@ -14,7 +14,7 @@ import {
 import logger from '../utils/logger'
 import { errorResponse } from '../schemas/resposne.schema'
 import { LoginError } from '../utils/appError'
-import { Database } from '@src/repositories/mongodb.repository'
+import { Database } from '../repositories/mongodb.repository'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']
