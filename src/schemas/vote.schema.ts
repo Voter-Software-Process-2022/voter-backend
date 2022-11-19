@@ -33,8 +33,4 @@ export const createVoteSchema = object({
   ),
 })
 
-export const candidateMpSchema = object({
-  body: object({}),
-})
-
 export type CreateVoteRequest = TypeOf<typeof createVoteSchema>['body']
