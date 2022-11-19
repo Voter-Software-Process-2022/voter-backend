@@ -17,7 +17,9 @@ const accessTokenExpiresIn: number = appConfig.accessTokenExpiresIn
 
 // CreateUser service
 export const createUser = async (input: Partial<User>) => {
+  logger.info('Creating user to MongoDB')
   const user = await userModel.create(input)
+  logger.info('Returning')
   return omit(user.toJSON(), excludedFields)
 }
 
