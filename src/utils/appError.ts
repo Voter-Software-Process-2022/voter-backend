@@ -21,3 +21,14 @@ export class LoginError extends Error {
     this.isOperational = true
   }
 }
+
+export class ConnectionBetweenModuleError extends Error {
+  status: string
+  isOperational: boolean
+
+  constructor(moduleName: string) {
+    super(`Connection between ${moduleName} module error`)
+    this.status = '400'
+    this.isOperational = true
+  }
+}
