@@ -49,6 +49,7 @@ export class Database {
       logger.info(data)
       return data
     } catch (e) {
+      logger.error(`Error...Disconnecting`)
       await disconnectDB()
       return null
     }
