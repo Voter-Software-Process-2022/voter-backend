@@ -34,12 +34,14 @@ app.use('/api/health', healthRouter)
 app.use('/api/users', userRouter)
 app.use('/api/auth', authRouter)
 
-app.use('/docs', serve, setup(docs))
+if (process.env.NODE_ENV === 'development') {
+  app.use('/docs', serve, setup(docs))
 
-app.get('/docs.json', (req: Request, res: Response) => {
-  res.setHeader('Content-Type', 'application/json')
-  res.send(docs)
-})
+  app.get('/docs.json', (req: Request, res: Response) => {
+    res.setHeader('Content-Type', 'application/json')
+    res.send(docs)
+  })
+}
 
 app.all('*', (req: Request, res: Response, next: NextFunction) => {
   const err = new Error(`Route ${req.originalUrl} not found`) as any
