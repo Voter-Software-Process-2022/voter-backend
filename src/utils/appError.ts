@@ -10,3 +10,14 @@ export default class AppError extends Error {
     Error.captureStackTrace(this, this.constructor)
   }
 }
+
+export class LoginError extends Error {
+  status: string
+  isOperational: boolean
+
+  constructor() {
+    super('Invalid citizen ID/Laser ID')
+    this.status = '400'
+    this.isOperational = true
+  }
+}

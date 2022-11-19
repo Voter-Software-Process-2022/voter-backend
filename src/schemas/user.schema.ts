@@ -70,6 +70,23 @@ import { object, string, TypeOf } from 'zod'
  *          type: string
  *        accessToken:
  *          type: string
+ *    LoginUserInputV2:
+ *      type: object
+ *      required:
+ *        - citizenId
+ *        - laserId
+ *      properties:
+ *        citizenId:
+ *          type: string
+ *          example: 1234567890123
+ *        laserId:
+ *          type: string
+ *          example: JT9999999999
+ *    LoginUserResponseV2:
+ *      type: object
+ *      properties:
+ *        token:
+ *          type: string
  */
 
 export const createUserSchema = object({
@@ -103,5 +120,19 @@ export const loginUserSchema = object({
   }),
 })
 
+export const loginUserSchemaV2 = object({
+  body: object({
+    citizenId: string({ required_error: 'Citizen ID is required' }).length(
+      13,
+      'Citizen ID must have 13 numbers',
+    ),
+    laserId: string({ required_error: 'Laser Code is required' }).length(
+      12,
+      "Laser Code must contains 2 letters and 10 numbers, and don't put - between",
+    ),
+  }),
+})
+
 export type CreateUserInput = TypeOf<typeof createUserSchema>['body']
 export type LoginUserInput = TypeOf<typeof loginUserSchema>['body']
+export type LoginUserInputV2 = TypeOf<typeof loginUserSchemaV2>['body']

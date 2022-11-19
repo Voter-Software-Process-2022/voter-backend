@@ -26,6 +26,7 @@ Backend for Voter module, act as a middleware to communicate between other modul
 2. Create an env file that contains
 ```
 PORT=
+USE_MOCK=
 
 NODE_ENV=
 MONGODB_USERNAME=
