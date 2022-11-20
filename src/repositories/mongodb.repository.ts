@@ -27,7 +27,7 @@ export class Database {
   async findOne(
     databaseName: string,
     collectionName: string,
-    query: Record<string, any>
+    query: Record<string, any>,
   ) {
     try {
       await connectDB()
