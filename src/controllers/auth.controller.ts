@@ -60,9 +60,7 @@ export const loginHandler = async (
   res: Response,
 ) => {
   try {
-    const db = new Database()
-    const response = await db.findOne('test', 'users', 'email', req.body.email)
-    return res.status(200).json(response)
+    return res.status(200).json(null)
   } catch (err: any) {
     logger.error(err.message)
     res.status(500).json(errorResponse(err.message))

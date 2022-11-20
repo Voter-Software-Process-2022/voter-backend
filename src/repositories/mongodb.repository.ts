@@ -23,27 +23,16 @@ export async function disconnectDB() {
   logger.info('MongoDB disconnected')
 }
 
-export interface IDatabase {
-  findOne: (
-    databaseName: string,
-    collectionName: string,
-    columnName: string,
-    keyword: string,
-  ) => Promise<WithId<Document> | null>
-}
-
 export class Database {
   async findOne(
     databaseName: string,
     collectionName: string,
-    columnName: string,
-    keyword: string,
+    query: Record<string, any>
   ) {
     try {
       await connectDB()
       const database = mongoClient.db(databaseName)
       const collection = database.collection(collectionName)
-      const query = { [columnName]: keyword }
       const data = await collection.findOne(query)
       await disconnectDB()
       logger.info(data)
