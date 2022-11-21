@@ -38,6 +38,8 @@ router.use(deserializeUser, requireUser)
  *     - Vote
  *     summary: Verify right to vote
  *     description: Verify right to vote before can access to vote
+ *     security:
+ *       - bearerAuth: []
  *     responses:
  *      200:
  *        description: Vote Success
