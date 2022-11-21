@@ -14,7 +14,6 @@ import {
 import logger from '../utils/logger'
 import { errorResponse } from '../schemas/resposne.schema'
 import { LoginError } from '../utils/appError'
-import { Database } from '../repositories/mongodb.repository'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']
@@ -60,7 +59,33 @@ export const loginHandler = async (
   res: Response,
 ) => {
   try {
-    return res.status(200).json(null)
+    // Get the user from the collection
+    const user = await findUser({ email: req.body.email })
+
+    // Check if user exist and password is correct
+    if (
+      !user ||
+      !(await user.comparePasswords(user.password, req.body.password))
+    ) {
+      return res.status(401).json(errorResponse('Invalid email or password'))
+      // return next(new AppError('Invalid email or password', 401))
+    }
+
+    // Create an Access Token
+    const { accessToken } = await signToken(user)
+
+    // Send Access Token in Cookie
+    res.cookie('accessToken', accessToken, accessTokenCookieOptions)
+    res.cookie('logged_in', true, {
+      ...accessTokenCookieOptions,
+      httpOnly: false,
+    })
+
+    // Send Access Token
+    res.status(200).json({
+      status: 'success',
+      accessToken,
+    })
   } catch (err: any) {
     logger.error(err.message)
     res.status(500).json(errorResponse(err.message))
