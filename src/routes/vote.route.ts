@@ -1,4 +1,7 @@
-import { verifyRightToVoteHandler, voteHandler } from '../controllers/vote.controller'
+import {
+  verifyRightToVoteHandler,
+  voteHandler,
+} from '../controllers/vote.controller'
 import { deserializeUser } from '../middleware/deserializeUser'
 import { requireUser } from '../middleware/requireUser'
 import { Router } from 'express'
