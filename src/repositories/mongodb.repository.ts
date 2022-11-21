@@ -1,12 +1,6 @@
 import { dbEnvironmentVariables } from '../utils/config'
 import logger from '../utils/logger'
-import {
-  ObjectId,
-  Document,
-  Filter,
-  FindOptions,
-  MongoClient,
-} from 'mongodb'
+import { ObjectId, Document, Filter, FindOptions, MongoClient } from 'mongodb'
 export class DatabaseModel implements Document {
   _id?: ObjectId
   createdAt?: Date
