@@ -26,7 +26,7 @@ const router = Router()
  *        description: Success
  *      400:
  *        description: Invalid Topic
- * '/candidate/{voteTopicId}':
+ * '/candidate/{voteTopicId}/{candidateId}':
  *  get:
  *     tags:
  *     - Candidate
