@@ -1,7 +1,13 @@
 import { dbEnvironmentVariables } from '../utils/config'
 import logger from '../utils/logger'
-import { Filter, FindOptions, MongoClient, ObjectId, WithId } from 'mongodb'
-export class DatabaseModel extends Document {
+import {
+  ObjectId,
+  Document,
+  Filter,
+  FindOptions,
+  MongoClient,
+} from 'mongodb'
+export class DatabaseModel implements Document {
   _id?: ObjectId
   createdAt?: Date
   updatedAt?: Date
@@ -10,8 +16,8 @@ export class DatabaseModel extends Document {
 class MongoDbClient {
   private readonly _uri: string
   private _client: MongoClient | undefined
-  private databaseName: string
-  private collectionName: string
+  private readonly databaseName: string
+  private readonly collectionName: string
 
   constructor(databaseName: string, collectionName: string) {
     this._uri = dbEnvironmentVariables.dbUri
@@ -38,11 +44,11 @@ class MongoDbClient {
       const database = client.db(this.databaseName)
       const collection = database.collection(this.collectionName)
       const data = await collection.findOne<T>(query, options)
-      client.close()
+      await client.close()
       return data
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
@@ -56,11 +62,11 @@ class MongoDbClient {
       const database = client.db(this.databaseName)
       const collection = database.collection(this.collectionName)
       const data = await collection.find<T>(query, options).toArray()
-      client.close()
+      await client.close()
       return data
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
@@ -71,12 +77,14 @@ class MongoDbClient {
       const database = client.db(this.databaseName)
       const collection = database.collection(this.collectionName)
       const result = await collection.insertOne(data)
-      client.close()
-      logger.info(`A document was inserted with the _id: ${result.insertedId}`)
+      await client.close()
+      logger.info(
+        `A document was inserted with the _id: ${result.insertedId.toString()}`,
+      )
       return result
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
@@ -87,12 +95,12 @@ class MongoDbClient {
       const database = client.db(this.databaseName)
       const collection = database.collection(this.collectionName)
       const result = await collection.insertMany(data)
-      client.close()
+      await client.close()
       logger.info(`${result.insertedCount} documents were inserted`)
       return result
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
@@ -100,7 +108,7 @@ class MongoDbClient {
   async updateOne(
     filter: Filter<Document>,
     data: DatabaseModel,
-    isUpsert: bool = true,
+    isUpsert = true,
   ) {
     const client = await this.getInstance()
     try {
@@ -111,14 +119,14 @@ class MongoDbClient {
         { $set: data },
         { upsert: isUpsert },
       )
-      client.close()
+      await client.close()
       logger.info(
         `${result.matchedCount} document(s) matched the filter, updated ${result.modifiedCount} document(s)`,
       )
       return result
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
@@ -129,12 +137,13 @@ class MongoDbClient {
       const database = client.db(this.databaseName)
       const collection = database.collection(this.collectionName)
       const result = await collection.updateMany(filter, { $set: data })
-      client.close()
-      logger.info(`Updated ${result.modifiedCount} documents`)
+      const modifiedCount: string = result.modifiedCount.toString()
+      await client.close()
+      logger.info(`Updated ${modifiedCount} documents`)
       return result
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
@@ -145,12 +154,13 @@ class MongoDbClient {
       const database = client.db(this.databaseName)
       const collection = database.collection(this.collectionName)
       const result = await collection.replaceOne(filter, data)
-      client.close()
-      logger.info(`Modified ${result.modifiedCount} document(s)`)
+      const modifiedCount: string = result.modifiedCount.toString()
+      await client.close()
+      logger.info(`Modified ${modifiedCount} document(s)`)
       return result
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
@@ -161,22 +171,19 @@ class MongoDbClient {
       const database = client.db(this.databaseName)
       const collection = database.collection(this.collectionName)
       const result = await collection.deleteOne(query)
-      client.close()
+      await client.close()
       if (result.deletedCount === 1) {
         logger.info('Successfully deleted one document.')
       } else {
         logger.info('No documents matched the query. Deleted 0 documents.')
       }
-      logger.info(`Modified ${result.modifiedCount} document(s)`)
       return result
     } catch (e) {
       logger.error(`Error...Disconnecting`)
-      client.close()
+      await client.close()
       throw e
     }
   }
-
-  async deleteMany()
 }
 
 export default MongoDbClient
