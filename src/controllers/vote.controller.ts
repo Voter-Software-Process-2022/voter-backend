@@ -1,4 +1,4 @@
-import { CreateVoteRequest } from '@src/schemas/vote.schema'
+import { CreateVoteRequest } from '../schemas/vote.schema'
 import { Request, Response } from 'express'
 
 export const voteHandler = async (

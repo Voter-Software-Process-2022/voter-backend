@@ -1,7 +1,7 @@
 import {
   candidatesHandler,
   candidateHandler,
-} from '@src/controllers/candidate.controller'
+} from '../controllers/candidate.controller'
 import { Router } from 'express'
 
 const router = Router()
