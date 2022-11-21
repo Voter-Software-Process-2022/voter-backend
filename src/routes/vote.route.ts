@@ -2,12 +2,9 @@ import {
   verifyRightToVoteHandler,
   voteHandler,
 } from '../controllers/vote.controller'
-import { deserializeUser } from '../middleware/deserializeUser'
-import { requireUser } from '../middleware/requireUser'
 import { Router } from 'express'
 
 const router = Router()
-router.use(deserializeUser, requireUser)
 
 /**
  * @openapi
@@ -17,8 +14,6 @@ router.use(deserializeUser, requireUser)
  *     - Vote
  *     summary: Process Vote
  *     description: Process vote to a candidate
- *     security:
- *       - bearerAuth: []
  *     requestBody:
  *      required: true
  *      content:
