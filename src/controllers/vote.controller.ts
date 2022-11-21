@@ -7,3 +7,7 @@ export const voteHandler = async (
 ): Promise<Response<any, Record<string, any>>> => {
   return res.status(200).json(null)
 }
+
+export const verifyRightToVoteHandler = async (req: Request, res: Response) => {
+  return res.status(200).json(null)
+}
