@@ -8,7 +8,7 @@ const router = Router()
 
 /**
  * @openapi
- * '/candidate/candidates/{voteTopicId}':
+ * '/candidate/{voteTopicId}':
  *  get:
  *     tags:
  *     - Candidate
@@ -26,6 +26,30 @@ const router = Router()
  *        description: Success
  *      400:
  *        description: Invalid Topic
+ * '/candidate/{voteTopicId}':
+ *  get:
+ *     tags:
+ *     - Candidate
+ *     summary: Get selected candidate
+ *     description: Get selected candidate of selected topic.
+ *     parameters:
+ *      - name: voteTopicId
+ *        in: path
+ *        description: Vote topic id (1=Party, 2=MP)
+ *        required: true
+ *        schema:
+ *          type: integer
+ *      - name: candidateId
+ *        in: path
+ *        description: Candidate id
+ *        required: true
+ *        schema:
+ *          type: integer
+ *     responses:
+ *      200:
+ *        description: Success
+ *      400:
+ *        description: Invalid Topic or Candidate
  */
 router.get('/:voteTopicId', candidatesHandler)
 router.get('/:voteTopicId/:candidateId', candidateHandler)

@@ -1,18 +1,17 @@
-import { mpCandidates } from '@src/mocks/candidateMp'
-import { partyCandidates } from '@src/mocks/candidateParty'
-import { VoteTopic } from '@src/models/vote.model'
+import { mpCandidates } from '../mocks/candidateMp'
+import { partyCandidates } from '../mocks/candidateParty'
+import { VoteTopic } from '../models/vote.model'
 import {
   GetAllMpCandidates,
   GetAllParties,
   GetAllPartyMembers,
   GetMpCandidateInfo,
-} from '@src/repositories/electioncommittee.repository'
-import { appConfig } from '@src/utils/config'
+} from '../repositories/electioncommittee.repository'
+import { appConfig } from '../utils/config'
 import { Request, Response } from 'express'
 
 export const candidatesHandler = async (req: Request, res: Response) => {
   if (appConfig.useMock) {
-    console.log(req.params.voteTopicId)
     if (req.params.voteTopicId === VoteTopic.Mp.valueOf().toString()) {
       return res.status(200).json(mpCandidates)
     } else if (
@@ -37,7 +36,6 @@ export const candidatesHandler = async (req: Request, res: Response) => {
 
 export const candidateHandler = async (req: Request, res: Response) => {
   if (appConfig.useMock) {
-    console.log(req.params.voteTopicId)
     if (req.params.voteTopicId === VoteTopic.Mp.valueOf().toString()) {
       return res.status(200).json(mpCandidates[0])
     } else if (
