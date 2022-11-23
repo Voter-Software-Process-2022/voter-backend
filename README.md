@@ -17,21 +17,24 @@ Backend for Voter module, act as a middleware to communicate between other modul
 ### Prerequisites
 
 | Name | Version |
-|------|---------|
-| yarn | any |
+| ---- | ------- |
+| yarn | any     |
 | node | 16.13.2 |
 
 ### Installation
+
 1. Clone this repository and and install packages using **yarn**.
 2. Create an env file that contains
+
 ```
 PORT=
 USE_MOCK=
 
-NODE_ENV=
+NODE_ENV=development
 MONGODB_USERNAME=
 MONGODB_PASSWORD=
 MONGODB_DATABASE_NAME=
+MONGODB_URI=
 
 REDIS_HOSTNAME=
 REDIS_PORT=
@@ -43,9 +46,11 @@ ACCESS_TOKEN_PUBLIC_KEY=
 ACCESS_TOKEN_EXPIRES_IN=
 ORIGIN=
 ```
+
 Ask any contributor to get some help
 
 3. Run project locally
+
 ```
 yarn dev
 ```

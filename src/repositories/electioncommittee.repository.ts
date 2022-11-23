@@ -1,5 +1,6 @@
 import { moduleHosts } from '../utils/config'
 import axios, { AxiosResponse } from 'axios'
+import { VoteTopic } from '../models/vote.model'
 
 const ELECTION_COMMITTEE_HOST = moduleHosts.electionCommittee
 
@@ -20,12 +21,18 @@ export interface PartyResponse {
 export interface Ballot {
   id: number
   areaId: number
-  partyId: number
+}
+
+export interface MpBallot extends Ballot {
   candidateId: number
 }
 
+export interface PartyBallot extends Ballot {
+  partyId: number
+}
+
 export interface VoteResponse {
-  voteForParty: Ballot
+  voteResult: MpBallot | PartyBallot
 }
 
 export const GetAllMpCandidates = async (): Promise<
@@ -69,11 +76,13 @@ export const GetAllPartyMembers = async (
 }
 
 export const sendVoteToEc = async (
-  partyId: number,
+  voteTopicId: VoteTopic,
   candidateId: number,
+  areaId: number,
 ): Promise<AxiosResponse<VoteResponse>> => {
   const requestParams = {
-    party_id: partyId,
+    vote_topic_id: voteTopicId,
+    area_id: areaId,
     candidate_id: candidateId,
   }
   const response = await axios.get<VoteResponse>(
