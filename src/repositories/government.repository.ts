@@ -38,8 +38,8 @@ export interface MessageResponse {
 
 export interface JwtToken {
   CitizenID: string
-  exp: Date
-  iat: Date
+  exp: number
+  iat: number
   iss: string
 }
 
