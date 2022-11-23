@@ -1,9 +1,9 @@
 import { moduleHosts } from '../utils/config'
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import {
   ConnectionBetweenModuleError,
   TokenExpiredError,
-} from '@src/utils/appError'
+} from '../utils/appError'
 
 const GOVERNMENT_HOST = moduleHosts.government
 
