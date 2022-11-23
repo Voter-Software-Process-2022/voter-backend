@@ -33,7 +33,7 @@ export class ConnectionBetweenModuleError extends Error {
   }
 }
 
-export class TokenExpired extends Error {
+export class TokenExpiredError extends Error {
   status: string
   isOperational: boolean
 
