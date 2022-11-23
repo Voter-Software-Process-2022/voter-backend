@@ -1,4 +1,4 @@
 export enum VoteTopic {
-  Party = 1,
-  Mp = 2,
+  Mp = 1,
+  Party = 2,
 }
