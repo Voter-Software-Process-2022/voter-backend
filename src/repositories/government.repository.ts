@@ -15,7 +15,7 @@ export interface UserInformationApiResponse {
 }
 
 export enum ApplyVoteApiResponseEnum {
-  Success = 201,
+  Success = 200,
   Unsuccess = 400,
   Unauthorized = 401,
   Unknown = 999,
