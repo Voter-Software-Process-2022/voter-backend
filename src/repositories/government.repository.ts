@@ -1,5 +1,5 @@
 import { moduleHosts } from '../utils/config'
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import {
   ConnectionBetweenModuleError,
   TokenExpiredError,
@@ -48,40 +48,53 @@ export interface JwtToken {
 export const GetUserInformationApiAsync = async (
   token: string,
 ): Promise<UserInformationApiResponse> => {
-  const config = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    const response = await axios.get(`${GOVERNMENT_HOST}/user/info`, config)
+    return response.data
+  } catch (err: any) {
+    if (err instanceof AxiosError) {
+      if (err.response?.status.toString().startsWith('4'))
+        throw new Error(err.response.data)
+    }
+    throw new ConnectionBetweenModuleError('Government')
   }
-  const response = await axios.get(`${GOVERNMENT_HOST}/user/info`, config)
-  if (response.status === 200)
-    return response.data as UserInformationApiResponse
-  if (response.status === 401) throw new TokenExpiredError()
-  else throw new ConnectionBetweenModuleError('Government')
 }
 
 export const ApplyVoteApiAsync = async (
   token: string,
 ): Promise<ApplyVoteApiResponseEnum> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    const response = await axios.post(`${GOVERNMENT_HOST}/vote/apply`, config)
+    return response.status
+  } catch {
+    throw new ConnectionBetweenModuleError('Government')
   }
-  const response = await axios.post(`${GOVERNMENT_HOST}/vote/apply`, config)
-  return response.status
 }
 
 export const ValidateUserApiAsync = async (
   token: string,
 ): Promise<ApplyVoteApiResponseEnum> => {
-  const config: AxiosRequestConfig = {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
+  try {
+    const config: AxiosRequestConfig = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+    const response = await axios.get(`${GOVERNMENT_HOST}/validity`, config)
+    return response.status
+  } catch {
+    throw new ConnectionBetweenModuleError('Government')
   }
-  const response = await axios.get(`${GOVERNMENT_HOST}/validity`, config)
-  return response.status
 }
 
 export const AuthenticationApiAsync = async (
@@ -92,8 +105,14 @@ export const AuthenticationApiAsync = async (
     CitizenID: citizenId,
     LazerID: laserId,
   }
-  const response = await axios.post(`${GOVERNMENT_HOST}/auth/login`, body)
-  if (response.status === 200) return response.data as AuthenticationApiResponse
-  if (response.status === 401) throw new Error(response.data.message)
-  else throw new ConnectionBetweenModuleError('Government')
+  try {
+    const response = await axios.post(`${GOVERNMENT_HOST}/auth/login`, body)
+    return response.data
+  } catch (err: any) {
+    if (err instanceof AxiosError) {
+      if (err.response?.status.toString().startsWith('4'))
+        throw new Error(err.response.data)
+    }
+    throw new ConnectionBetweenModuleError('Government')
+  }
 }
