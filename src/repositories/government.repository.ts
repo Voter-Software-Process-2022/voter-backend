@@ -1,5 +1,9 @@
 import { moduleHosts } from '../utils/config'
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import {
+  ConnectionBetweenModuleError,
+  TokenExpiredError,
+} from '@src/utils/appError'
 
 const GOVERNMENT_HOST = moduleHosts.government
 
@@ -43,17 +47,17 @@ export interface JwtToken {
 
 export const GetUserInformationApiAsync = async (
   token: string,
-): Promise<AxiosResponse<UserInformationApiResponse | MessageResponse>> => {
+): Promise<UserInformationApiResponse> => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   }
-  const response = await axios.get<UserInformationApiResponse | MessageResponse>(
-    `${GOVERNMENT_HOST}/user/info`,
-    config,
-  )
-  return response
+  const response = await axios.get(`${GOVERNMENT_HOST}/user/info`, config)
+  if (response.status === 200)
+    return response.data as UserInformationApiResponse
+  if (response.status === 401) throw new TokenExpiredError()
+  else throw new ConnectionBetweenModuleError('Government')
 }
 
 export const ApplyVoteApiAsync = async (
@@ -83,14 +87,13 @@ export const ValidateUserApiAsync = async (
 export const AuthenticationApiAsync = async (
   citizenId: string,
   laserId: string,
-): Promise<AxiosResponse<AuthenticationApiResponse>> => {
+): Promise<AuthenticationApiResponse> => {
   const body = {
     CitizenID: citizenId,
     LazerID: laserId,
   }
-  const response = await axios.post<AuthenticationApiResponse>(
-    `${GOVERNMENT_HOST}/auth/login`,
-    body,
-  )
-  return response
+  const response = await axios.post(`${GOVERNMENT_HOST}/auth/login`, body)
+  if (response.status === 200) return response.data as AuthenticationApiResponse
+  if (response.status === 401) throw new Error(response.data.message)
+  else throw new ConnectionBetweenModuleError('Government')
 }
