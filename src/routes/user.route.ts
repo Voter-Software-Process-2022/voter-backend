@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { getMeHandler } from '../controllers/user.controller'
+import { getMeHandler, getMeHandlerV2 } from '../controllers/user.controller'
 import { deserializeUser } from '../middleware/deserializeUser'
 import { requireUser } from '../middleware/requireUser'
 
@@ -43,5 +43,6 @@ router.use(deserializeUser, requireUser)
  *              $ref: '#/components/schemas/ErrorResponse'
  */
 router.get('/me', getMeHandler)
+// router.get('/me', getMeHandlerV2)
 
 export default router
