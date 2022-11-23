@@ -76,7 +76,7 @@ export const AuthenticationApiAsync = async (
 ): Promise<AxiosResponse<AuthenticationApiResponse>> => {
   const body = {
     CitizenID: citizenId,
-    LaserID: laserId,
+    LazerID: laserId,
   }
   const response = await axios.post<AuthenticationApiResponse>(
     `${GOVERNMENT_HOST}/auth/login`,
