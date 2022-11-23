@@ -31,6 +31,12 @@ export interface AuthenticationApiResponse {
   token: string
 }
 
+export interface JwtToken {
+  CitizenID: string
+  exp: Date
+  iat: Date
+}
+
 export const GetUserInformationApiAsync = async (
   token: string,
 ): Promise<AxiosResponse<UserInformationApiResponse>> => {
