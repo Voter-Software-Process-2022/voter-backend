@@ -94,7 +94,7 @@ export const deserializeUserV2 = async (
     // Check if user has a valid session
     const expirationDate = new Date(Number(decoded.exp) * 1000)
     const currentDate = new Date()
-    if (currentDate < expirationDate) {
+    if (currentDate > expirationDate) {
       return res.status(401).json(errorResponse('User session has expired'))
       // return next(new AppError(`User session has expired`, 401))
     }
