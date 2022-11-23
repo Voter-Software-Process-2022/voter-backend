@@ -31,6 +31,10 @@ export interface AuthenticationApiResponse {
   token: string
 }
 
+export interface MessageResponse {
+  message: string
+}
+
 export interface JwtToken {
   CitizenID: string
   exp: Date
@@ -39,13 +43,13 @@ export interface JwtToken {
 
 export const GetUserInformationApiAsync = async (
   token: string,
-): Promise<AxiosResponse<UserInformationApiResponse>> => {
+): Promise<AxiosResponse<UserInformationApiResponse | MessageResponse>> => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   }
-  const response = await axios.get<UserInformationApiResponse>(
+  const response = await axios.get<UserInformationApiResponse | MessageResponse>(
     `${GOVERNMENT_HOST}/user/info`,
     config,
   )
