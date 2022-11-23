@@ -15,6 +15,7 @@ import swaggerDocs from './utils/swagger'
 import { serve, setup } from 'swagger-ui-express'
 import voteRouter from './routes/vote.route'
 import candidateRouter from './routes/candidate.route'
+import logger from './utils/logger'
 
 const app: Express = express()
 
@@ -31,6 +32,11 @@ app.use(
     credentials: true,
   }),
 )
+
+app.use((req, res, next) => {
+  logger.info(`${req.method}: ${req.originalUrl}`)
+  next()
+})
 
 app.use('/api/health', healthRouter)
 app.use('/api/users', userRouter)
