@@ -1,3 +1,4 @@
+import { DatabaseModel } from '../repositories/mongodb.repository'
 import {
   getModelForClass,
   index,
@@ -18,7 +19,7 @@ import { hash, compare } from 'bcryptjs'
     timestamps: true,
   },
 })
-export class User {
+export class User extends DatabaseModel {
   @prop({ required: true, unique: true, minlength: 13, maxLength: 13 })
   citizenID!: string
 
