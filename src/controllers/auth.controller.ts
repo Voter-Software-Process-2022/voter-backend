@@ -5,11 +5,7 @@ import {
   LoginUserInput,
   LoginUserInputV2,
 } from '../schemas/user.schema'
-import {
-  createUser,
-  findUser,
-  signToken,
-} from '../services/user.service'
+import { createUser, findUser, signToken } from '../services/user.service'
 import logger from '../utils/logger'
 import { errorResponse } from '../schemas/resposne.schema'
 import { LoginError } from '../utils/appError'
