@@ -8,12 +8,12 @@ import {
 import {
   createUser,
   findUser,
-  loginWithGov,
   signToken,
 } from '../services/user.service'
 import logger from '../utils/logger'
 import { errorResponse } from '../schemas/resposne.schema'
 import { LoginError } from '../utils/appError'
+import { AuthenticationApiAsync } from '../repositories/government.repository'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']
@@ -108,7 +108,10 @@ export const loginHandlerV2 = async (
         })
       else throw new LoginError()
     }
-    const response = await loginWithGov(req.body.citizenId, req.body.laserId)
+    const response = await AuthenticationApiAsync(
+      req.body.citizenId,
+      req.body.laserId,
+    )
     return res.status(200).json(response)
   } catch (e: any) {
     if (e instanceof LoginError) return res.status(400).json(null)
