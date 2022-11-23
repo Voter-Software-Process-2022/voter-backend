@@ -42,7 +42,7 @@ export const GetUserInformationApiAsync = async (
 ): Promise<AxiosResponse<UserInformationApiResponse>> => {
   const config = {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
   }
   const response = await axios.get<UserInformationApiResponse>(
@@ -57,7 +57,7 @@ export const ApplyVoteApiAsync = async (
 ): Promise<ApplyVoteApiResponseEnum> => {
   const config: AxiosRequestConfig = {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
   }
   const response = await axios.post(`${GOVERNMENT_HOST}/vote/apply`, config)
@@ -69,7 +69,7 @@ export const ValidateUserApiAsync = async (
 ): Promise<ApplyVoteApiResponseEnum> => {
   const config: AxiosRequestConfig = {
     headers: {
-      Authorization: token,
+      Authorization: `Bearer ${token}`,
     },
   }
   const response = await axios.get(`${GOVERNMENT_HOST}/validity`, config)
