@@ -30,7 +30,7 @@ class MongoDbClient {
   }
 
   async findOne<T extends Document>(
-    query: DatabaseModel,
+    query: Record<string, any>,
     options?: FindOptions<Document>,
   ) {
     const client = await this.getInstance()
@@ -48,7 +48,7 @@ class MongoDbClient {
   }
 
   async findMany<T extends Document>(
-    query: DatabaseModel,
+    query: Record<string, any>,
     options?: FindOptions<Document>,
   ) {
     const client = await this.getInstance()
@@ -159,7 +159,7 @@ class MongoDbClient {
     }
   }
 
-  async deleteOne(query: DatabaseModel) {
+  async deleteOne(query: Record<string, any>) {
     const client = await this.getInstance()
     try {
       const database = client.db(this.databaseName)
