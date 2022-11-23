@@ -54,12 +54,15 @@ export const GetUserInformationApiAsync = async (
         Authorization: `Bearer ${token}`,
       },
     }
-    const response = await axios.get(`${GOVERNMENT_HOST}/user/info`, config)
+    const response = await axios.get<UserInformationApiResponse>(
+      `${GOVERNMENT_HOST}/user/info`,
+      config,
+    )
     return response.data
   } catch (err: any) {
     if (err instanceof AxiosError) {
       if (err.response?.status.toString().startsWith('4'))
-        throw new Error(err.response.data)
+        throw new Error(err.response.data.message)
     }
     throw new ConnectionBetweenModuleError('Government')
   }
@@ -106,12 +109,15 @@ export const AuthenticationApiAsync = async (
     LazerID: laserId,
   }
   try {
-    const response = await axios.post(`${GOVERNMENT_HOST}/auth/login`, body)
+    const response = await axios.post<AuthenticationApiResponse>(
+      `${GOVERNMENT_HOST}/auth/login`,
+      body,
+    )
     return response.data
   } catch (err: any) {
     if (err instanceof AxiosError) {
       if (err.response?.status.toString().startsWith('4'))
-        throw new Error(err.response.data)
+        throw new Error(err.response.data.message)
     }
     throw new ConnectionBetweenModuleError('Government')
   }
