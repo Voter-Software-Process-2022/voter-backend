@@ -4,13 +4,13 @@ import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 const GOVERNMENT_HOST = moduleHosts.government
 
 export interface UserInformationApiResponse {
-  CitizensID: string
-  FirstName: string
-  LastName: string
-  DateOfBirth: Date
-  Religion: string
-  Location: string
+  CitizenID: string
+  LazerID: string
+  Name: string
+  Lastname: string
+  Birthday: Date
   Nationality: string
+  DistricID: number
 }
 
 export enum ApplyVoteApiResponseEnum {
