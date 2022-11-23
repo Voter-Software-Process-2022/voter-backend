@@ -1,9 +1,6 @@
 import { moduleHosts } from '../utils/config'
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
-import {
-  ConnectionBetweenModuleError,
-  TokenExpiredError,
-} from '../utils/appError'
+import { ConnectionBetweenModuleError } from '../utils/appError'
 
 const GOVERNMENT_HOST = moduleHosts.government
 
@@ -43,6 +40,7 @@ export interface JwtToken {
   CitizenID: string
   exp: Date
   iat: Date
+  iss: string
 }
 
 export const GetUserInformationApiAsync = async (
