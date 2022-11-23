@@ -69,7 +69,7 @@ export const deserializeUserV2 = async (
 ) => {
   try {
     // Get the token
-    let accessToken
+    let accessToken: string | undefined
     if (req.headers.authorization?.startsWith('Bearer')) {
       accessToken = req.headers.authorization.split(' ')[1]
     } else if (req.cookies.accessToken) {
@@ -92,7 +92,7 @@ export const deserializeUserV2 = async (
     }
 
     // Check if user has a valid session
-    const expirationDate = new Date(Number(decoded.exp) * 1000)
+    const expirationDate = new Date(decoded.exp * 1000)
     const currentDate = new Date()
     if (currentDate > expirationDate) {
       return res.status(401).json(errorResponse('User session has expired'))
@@ -100,7 +100,7 @@ export const deserializeUserV2 = async (
     }
 
     // Check if user still exist
-    const user = await getUserInfoFromGov(accessToken)
+    const user = await getUserInfoFromGov(`Bearer ${accessToken}`)
 
     if (!user) {
       return res

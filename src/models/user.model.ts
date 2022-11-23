@@ -37,5 +37,9 @@ export class User extends DatabaseModel {
   }
 }
 
+export interface UserReference extends DatabaseModel {
+  citizenId: string
+}
+
 const userModel = getModelForClass(User)
 export default userModel

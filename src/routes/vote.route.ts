@@ -43,10 +43,24 @@ router.use(deserializeUserV2, requireUser)
  *     responses:
  *      200:
  *        description: Vote Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '$/components/schemas/VoteAvailableResponse'
  *      400:
  *        description: Bad Request.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ErrorResponse'
  *      401:
  *        description: Unauthorized. User not authenticated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ErrorResponse'
  */
 router.post('/submit', voteHandler)
 router.post('/pre-verify', verifyRightToVoteHandler)
