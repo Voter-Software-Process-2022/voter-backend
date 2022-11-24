@@ -8,8 +8,8 @@ export interface CandidateResponse {
   id: number
   name: string
   pictureUrl: string
-  areaId: number
-  partyId: number
+  area_id: number
+  party_id: number
 }
 
 export interface PartyResponse {
@@ -44,11 +44,18 @@ export const GetAllMpCandidates = async (): Promise<
   return response
 }
 
+export const GetAllMpCandidatesInArea = async (areaId: number) => {
+  const response = await axios.get<CandidateResponse[]>(
+    `${ELECTION_COMMITTEE_HOST}/candidates/area/${areaId}`,
+  )
+  return response
+}
+
 export const GetMpCandidateInfo = async (
   id: number,
 ): Promise<AxiosResponse<CandidateResponse>> => {
   const response = await axios.get<CandidateResponse>(
-    `${ELECTION_COMMITTEE_HOST}/candidate/${id}`,
+    `${ELECTION_COMMITTEE_HOST}/candidates/${id}`,
   )
   return response
 }
@@ -58,6 +65,15 @@ export const GetAllParties = async (): Promise<
 > => {
   const response = await axios.get<PartyResponse[]>(
     `${ELECTION_COMMITTEE_HOST}/party`,
+  )
+  return response
+}
+
+export const GetPartyInformation = async (
+  partyId: number,
+): Promise<AxiosResponse<PartyResponse>> => {
+  const response = await axios.get<PartyResponse>(
+    `${ELECTION_COMMITTEE_HOST}/party/${partyId}`,
   )
   return response
 }
