@@ -11,7 +11,7 @@ import { errorResponse } from '../schemas/resposne.schema'
 import { LoginError } from '../utils/appError'
 import { AuthenticationApiAsync } from '../repositories/government.repository'
 import MongoDbClient from '../repositories/mongodb.repository'
-import { UserReference } from '@src/models/user.model'
+import { UserReference } from '../models/user.model'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']
