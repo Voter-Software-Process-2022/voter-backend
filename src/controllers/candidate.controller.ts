@@ -60,5 +60,5 @@ export const candidateHandler = async (req: Request, res: Response) => {
 
 export const partyMemberHandler = async (req: Request, res: Response) => {
   const response = await GetAllPartyMembers(Number(req.params.partyId))
-  return response
+  return res.status(200).json(response.data)
 }
