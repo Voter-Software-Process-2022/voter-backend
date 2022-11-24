@@ -1,5 +1,8 @@
 import { ObjectId } from 'mongodb'
-import { CandidateResponse, PartyResponse } from '../repositories/electioncommittee.repository'
+import {
+  CandidateResponse,
+  PartyResponse,
+} from '../repositories/electioncommittee.repository'
 import { DatabaseModel } from '../repositories/mongodb.repository'
 
 export enum VoteTopic {
