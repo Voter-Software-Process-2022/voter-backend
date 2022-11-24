@@ -112,7 +112,7 @@ export const loginHandlerV2 = async (
       req.body.citizenId,
       req.body.laserId,
     )
-    const currentUser = await mongoClient.findOne({
+    const currentUser = await mongoClient.findOne<UserReference>({
       citizenId: req.body.citizenId,
     })
     if (currentUser === null) {

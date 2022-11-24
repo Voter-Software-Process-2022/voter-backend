@@ -54,9 +54,9 @@ export const GetMpCandidateInfo = async (
 }
 
 export const GetAllParties = async (): Promise<
-  AxiosResponse<PartyResponse>
+  AxiosResponse<PartyResponse[]>
 > => {
-  const response = await axios.get<PartyResponse>(
+  const response = await axios.get<PartyResponse[]>(
     `${ELECTION_COMMITTEE_HOST}/party`,
   )
   return response

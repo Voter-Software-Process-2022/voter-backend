@@ -3,7 +3,20 @@ import { NextFunction, Request, Response } from 'express'
 import { findUserById, getUserInfoFromGov } from '../services/user.service'
 import redisClient from '../utils/connectRedis'
 import { parseJwt, verifyJwt } from '../utils/jwt'
-import { JwtToken } from '../repositories/government.repository'
+import {
+  JwtToken,
+  UserInformationApiResponse,
+} from '../repositories/government.repository'
+
+interface Locals {
+  user: UserInformationApiResponse
+}
+
+declare module 'express' {
+  export interface Response {
+    locals: Locals
+  }
+}
 
 export const deserializeUser = async (
   req: Request,
@@ -54,7 +67,7 @@ export const deserializeUser = async (
 
     // This is really important (Helps us know if the user is logged in from other controllers)
     // You can do: (req.user or res.locals.user)
-    res.locals.user = user
+    // res.locals.user = user
 
     next()
   } catch (err: any) {
