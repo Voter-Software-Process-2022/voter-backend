@@ -14,6 +14,6 @@ export interface VoteResult extends DatabaseModel {
   timestamp: Date
   userReference: ObjectId
   voteTopicId: number
-  CandidateId: number
-  candidateInfo: CandidateResponse | PartyResponse
+  CandidateId?: number
+  candidateInfo?: CandidateResponse | PartyResponse
 }

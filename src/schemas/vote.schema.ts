@@ -18,6 +18,13 @@ const verifyCandidateId = async (candidateId: number) => true
  *          type: number
  *        candidateId:
  *          type: number
+ *    VoteNoRequest:
+ *      type: object
+ *      required:
+ *        - voteTopicId
+ *      properties:
+ *        voteTopicId:
+ *          type: number
  *    VoteAvailableResponse:
  *      type: object
  *      properties:
@@ -55,9 +62,18 @@ export const createVoteSchema = object({
   ),
 })
 
+export const createVoteNoSchema = object({
+  body: object({
+    voteTopicId: number({ required_error: 'voteTopicId is required' }),
+  }).refine(async (data) => await verifyTopicId(data.voteTopicId), {
+    message: 'Topic Not Found',
+  }),
+})
+
 export interface VoteAvailableResponse {
   voteTopicId: number
   voteTopicName: string
 }
 
 export type CreateVoteRequest = TypeOf<typeof createVoteSchema>['body']
+export type CreateVoteNoRequest = TypeOf<typeof createVoteNoSchema>['body']

@@ -1,4 +1,5 @@
 import {
+  CreateVoteNoRequest,
   CreateVoteRequest,
   VoteAvailableResponse,
 } from '../schemas/vote.schema'
@@ -67,6 +68,46 @@ export const voteHandler = async (
     voteTopicId: req.body.voteTopicId,
     CandidateId: req.body.candidateId,
     candidateInfo: candidateInformation,
+  }
+
+  const response = await mongoClientVote.insertOne(voteResult)
+  return res.status(200).json(messageResponse(response.insertedId.toString()))
+}
+
+export const voteNoHandler = async (
+  req: Request<
+    Record<string, never>,
+    Record<string, never>,
+    CreateVoteNoRequest
+  >,
+  res: Response,
+) => {
+  const userRef = await mongoClientUser.findOne<UserReference>({
+    citizenId: res.locals.user.CitizenID.toString(),
+  })
+  if (userRef === null || userRef._id === undefined)
+    return res.status(401).json(errorResponse("You're not logged in"))
+  if (req.body.voteTopicId === VoteTopic.Mp) {
+    const voteMp = await mongoClientVote.findOne<VoteResult>({
+      voteTopicId: VoteTopic.Mp,
+      userReference: userRef._id,
+    })
+    if (voteMp !== null) {
+      return res.status(401).json(errorResponse('You already voted this topic'))
+    }
+  } else if (req.body.voteTopicId === VoteTopic.Party) {
+    const voteParty = await mongoClientVote.findOne<VoteResult>({
+      voteTopicId: VoteTopic.Party,
+      userReference: userRef._id,
+    })
+    if (voteParty !== null) {
+      return res.status(401).json(errorResponse('You already voted this topic'))
+    }
+  } else return res.status(401).json(errorResponse('Vote topic unavailable'))
+  const voteResult: VoteResult = {
+    timestamp: new Date(),
+    userReference: userRef._id,
+    voteTopicId: req.body.voteTopicId,
   }
 
   const response = await mongoClientVote.insertOne(voteResult)

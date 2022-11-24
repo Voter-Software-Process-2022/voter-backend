@@ -2,6 +2,7 @@ import {
   userCandidateHandler,
   verifyRightToVoteHandler,
   voteHandler,
+  voteNoHandler,
 } from '../controllers/vote.controller'
 import { deserializeUserV2 } from '../middleware/deserializeUser'
 import { requireUser } from '../middleware/requireUser'
@@ -49,6 +50,27 @@ router.use(deserializeUserV2, requireUser)
  *        description: Bad Request. User already voted this topic
  *      401:
  *        description: Unauthorized. User not authenticated
+ * '/vote/no':
+ *  post:
+ *     tags:
+ *     - Vote
+ *     summary: Process Vote No
+ *     description: Process vote No to topic
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/VoteNoRequest'
+ *     responses:
+ *      200:
+ *        description: Success
+ *      400:
+ *        description: Bad Request. User already voted this topic
+ *      401:
+ *        description: Unauthorized. User not authenticated
  * '/vote/pre-verify':
  *  post:
  *     tags:
@@ -79,6 +101,7 @@ router.use(deserializeUserV2, requireUser)
  *            schema:
  *              $ref: '#/components/schemas/ErrorResponse'
  */
+router.post('/no', voteNoHandler)
 router.post('/submit', voteHandler)
 router.post('/pre-verify', verifyRightToVoteHandler)
 router.post('/mpcandidate', userCandidateHandler)
