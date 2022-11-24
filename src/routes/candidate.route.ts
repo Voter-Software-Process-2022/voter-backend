@@ -1,6 +1,7 @@
 import {
   candidatesHandler,
   candidateHandler,
+  partyMemberHandler,
 } from '../controllers/candidate.controller'
 import { Router } from 'express'
 
@@ -24,6 +25,12 @@ const router = Router()
  *     responses:
  *      200:
  *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/CandidateResponse'
  *      400:
  *        description: Invalid Topic
  * '/candidate/{voteTopicId}/{candidateId}':
@@ -35,7 +42,7 @@ const router = Router()
  *     parameters:
  *      - name: voteTopicId
  *        in: path
- *        description: Vote topic id (1=Party, 2=MP)
+ *        description: Vote topic id (1=MP, 2=Party)
  *        required: true
  *        schema:
  *          type: integer
@@ -50,8 +57,30 @@ const router = Router()
  *        description: Success
  *      400:
  *        description: Invalid Topic or Candidate
+ * '/candidate/partymember/{partyId}':
+ *  get:
+ *    tags:
+ *    - Candidate
+ *    summary: Get all party members
+ *    parameters:
+ *     - name: partyId
+ *       in: path
+ *       description: Party ID
+ *       required: true
+ *       schema:
+ *         type: integer
+ *    responses:
+ *     200:
+ *       description: Success
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: array
+ *             items:
+ *               $ref: '#/components/schemas/CandidateResponse'
  */
 router.get('/:voteTopicId', candidatesHandler)
 router.get('/:voteTopicId/:candidateId', candidateHandler)
+router.get('/partymember/:partyId', partyMemberHandler)
 
 export default router

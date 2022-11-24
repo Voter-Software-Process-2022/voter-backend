@@ -1,4 +1,5 @@
 import {
+  userCandidateHandler,
   verifyRightToVoteHandler,
   voteHandler,
 } from '../controllers/vote.controller'
@@ -11,6 +12,22 @@ router.use(deserializeUserV2, requireUser)
 
 /**
  * @openapi
+ * '/vote/mpcandidate':
+ *  post:
+ *    tags:
+ *    - Vote
+ *    summary: Get MP candidate in user area
+ *    security:
+ *       - bearerAuth: []
+ *    responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/CandidateResponse'
  * '/vote/submit':
  *  post:
  *     tags:
@@ -42,13 +59,13 @@ router.use(deserializeUserV2, requireUser)
  *       - bearerAuth: []
  *     responses:
  *      200:
- *        description: Vote Success
+ *        description: Has right
  *        content:
  *          application/json:
  *            schema:
  *              type: array
  *              items:
- *                $ref: '$/components/schemas/VoteAvailableResponse'
+ *                $ref: '#/components/schemas/VoteAvailableResponse'
  *      400:
  *        description: Bad Request.
  *        content:
@@ -64,5 +81,6 @@ router.use(deserializeUserV2, requireUser)
  */
 router.post('/submit', voteHandler)
 router.post('/pre-verify', verifyRightToVoteHandler)
+router.post('/mpcandidate', userCandidateHandler)
 
 export default router
