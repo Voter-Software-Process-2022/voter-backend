@@ -112,15 +112,18 @@ export const loginHandlerV2 = async (
       req.body.citizenId,
       req.body.laserId,
     )
-    // const currentUser = await mongoClient.findOne<UserReference>({
-    //   citizenId: req.body.citizenId,
-    // })
-    // if (currentUser === null) {
-    //   const userRerference: UserReference = {
-    //     citizenId: req.body.citizenId,
-    //   }
-    //   await mongoClient.insertOne(userRerference)
-    // }
+    logger.info("Searching for user reference...")
+    const currentUser = await mongoClient.findOne<UserReference>({
+      citizenId: req.body.citizenId,
+    })
+    if (currentUser === null) {
+      logger.info("User refernce not found, creating...")
+      const userRerference: UserReference = {
+        citizenId: req.body.citizenId,
+      }
+      await mongoClient.insertOne(userRerference)
+      logger.info("User reference created...")
+    }
     return res.status(200).json(response)
   } catch (e: any) {
     if (e instanceof LoginError) return res.status(400).json(null)
