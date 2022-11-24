@@ -32,3 +32,14 @@ export class ConnectionBetweenModuleError extends Error {
     this.isOperational = true
   }
 }
+
+export class TokenExpiredError extends Error {
+  status: string
+  isOperational: boolean
+
+  constructor() {
+    super('Token expired')
+    this.status = '401'
+    this.isOperational = true
+  }
+}

@@ -2,12 +2,12 @@ import {
   verifyRightToVoteHandler,
   voteHandler,
 } from '../controllers/vote.controller'
-import { deserializeUser } from '../middleware/deserializeUser'
+import { deserializeUserV2 } from '../middleware/deserializeUser'
 import { requireUser } from '../middleware/requireUser'
 import { Router } from 'express'
 
 const router = Router()
-router.use(deserializeUser, requireUser)
+router.use(deserializeUserV2, requireUser)
 
 /**
  * @openapi
@@ -43,10 +43,24 @@ router.use(deserializeUser, requireUser)
  *     responses:
  *      200:
  *        description: Vote Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '$/components/schemas/VoteAvailableResponse'
  *      400:
  *        description: Bad Request.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ErrorResponse'
  *      401:
  *        description: Unauthorized. User not authenticated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ErrorResponse'
  */
 router.post('/submit', voteHandler)
 router.post('/pre-verify', verifyRightToVoteHandler)

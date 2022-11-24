@@ -18,6 +18,13 @@ const verifyCandidateId = async (candidateId: number) => true
  *          type: number
  *        candidateId:
  *          type: number
+ *    VoteAvailableResponse:
+ *      type: object
+ *      properties:
+ *        voteTopicId:
+ *          type: number
+ *        voteTopicName:
+ *          type: string
  */
 export const createVoteSchema = object({
   body: object({

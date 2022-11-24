@@ -17,7 +17,7 @@ const router = Router()
  *     parameters:
  *      - name: voteTopicId
  *        in: path
- *        description: Vote topic id (1=Party, 2=MP)
+ *        description: Vote topic id (1=MP, 2=Party)
  *        required: true
  *        schema:
  *          type: integer
