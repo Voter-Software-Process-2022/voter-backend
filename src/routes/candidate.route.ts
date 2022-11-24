@@ -79,8 +79,8 @@ const router = Router()
  *             items:
  *               $ref: '#/components/schemas/CandidateResponse'
  */
+router.get('/partymember/:partyId', partyMemberHandler)
 router.get('/:voteTopicId', candidatesHandler)
 router.get('/:voteTopicId/:candidateId', candidateHandler)
-router.get('/partymember/:partyId', partyMemberHandler)
 
 export default router

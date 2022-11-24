@@ -81,12 +81,8 @@ export const GetPartyInformation = async (
 export const GetAllPartyMembers = async (
   partyId: number,
 ): Promise<AxiosResponse<CandidateResponse[]>> => {
-  const requestParams = {
-    party_id: partyId,
-  }
   const response = await axios.get<CandidateResponse[]>(
-    `${ELECTION_COMMITTEE_HOST}/party/member`,
-    { params: requestParams },
+    `${ELECTION_COMMITTEE_HOST}/party/member/${partyId}`,
   )
   return response
 }
