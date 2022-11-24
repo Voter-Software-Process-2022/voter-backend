@@ -34,6 +34,13 @@ export const voteHandler = async (
     return res.status(401).json(errorResponse("You're not logged in"))
   let candidateInformation: CandidateResponse | PartyResponse
   if (req.body.voteTopicId === VoteTopic.Mp) {
+    const voteMp = await mongoClientVote.findOne<VoteResult>({
+      voteTopicId: VoteTopic.Mp,
+      userReference: userRef._id,
+    })
+    if (voteMp !== null) {
+      return res.status(401).json(errorResponse('You already voted this topic'))
+    }
     const result = await GetMpCandidateInfo(req.body.candidateId)
     if (result.data.area_id === res.locals.user.DistricID) {
       candidateInformation = result.data
@@ -44,6 +51,13 @@ export const voteHandler = async (
       return res.status(401).json(errorResponse('Area does not match'))
     }
   } else if (req.body.voteTopicId === VoteTopic.Party) {
+    const voteParty = await mongoClientVote.findOne<VoteResult>({
+      voteTopicId: VoteTopic.Party,
+      userReference: userRef._id,
+    })
+    if (voteParty !== null) {
+      return res.status(401).json(errorResponse('You already voted this topic'))
+    }
     const result = await GetPartyInformation(req.body.candidateId)
     candidateInformation = result.data
   } else return res.status(401).json(errorResponse('Vote topic unavailable'))
@@ -78,7 +92,7 @@ export const verifyRightToVoteHandler = async (req: Request, res: Response) => {
       const availableVoteTopic: VoteAvailableResponse[] = []
       const voteMp = await mongoClientVote.findOne<VoteResult>({
         voteTopicId: VoteTopic.Mp,
-        userId: userRef._id,
+        userReference: userRef._id,
       })
       if (voteMp === null) {
         logger.info('MP Vote for this user not found, adding to available...')
@@ -89,7 +103,7 @@ export const verifyRightToVoteHandler = async (req: Request, res: Response) => {
       }
       const voteParty = await mongoClientVote.findOne<VoteResult>({
         voteTopicId: VoteTopic.Party,
-        userId: userRef._id,
+        userReference: userRef._id,
       })
       if (voteParty === null) {
         logger.info(
@@ -110,6 +124,9 @@ export const verifyRightToVoteHandler = async (req: Request, res: Response) => {
 
 export const userCandidateHandler = async (req: Request, res: Response) => {
   const areaId = res.locals.user.DistricID
+  if (areaId === undefined) {
+    return res.status(401).json('You are not logged in')
+  }
   try {
     const response = await GetAllMpCandidatesInArea(areaId)
     return res.status(200).json(response.data)
