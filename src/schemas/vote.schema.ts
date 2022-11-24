@@ -40,4 +40,9 @@ export const createVoteSchema = object({
   ),
 })
 
+export interface VoteAvailableResponse {
+  voteTopicId: number
+  voteTopicName: string
+}
+
 export type CreateVoteRequest = TypeOf<typeof createVoteSchema>['body']

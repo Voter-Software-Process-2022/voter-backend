@@ -1,4 +1,7 @@
-import { CreateVoteRequest } from '../schemas/vote.schema'
+import {
+  CreateVoteRequest,
+  VoteAvailableResponse,
+} from '../schemas/vote.schema'
 import { Request, Response } from 'express'
 import {
   ApplyVoteApiResponseEnum,
@@ -10,10 +13,10 @@ import { UserReference } from '../models/user.model'
 import { VoteResult, VoteTopic } from '../models/vote.model'
 import {
   CandidateResponse,
-  GetAllParties,
   GetMpCandidateInfo,
   PartyResponse,
 } from '../repositories/electioncommittee.repository'
+import logger from '../utils/logger'
 
 const mongoClientUser = new MongoDbClient('auth', 'user_ref')
 const mongoClientVote = new MongoDbClient('vote', 'ballot')
@@ -53,18 +56,43 @@ export const verifyRightToVoteHandler = async (req: Request, res: Response) => {
     if (req.headers.authorization === undefined)
       return res.status(401).json('You are not logged in')
     const result = await ValidateUserApiAsync(req.headers.authorization)
-    console.log(result)
+
     if (result === ApplyVoteApiResponseEnum.Success) {
-      const userRef = await mongoClientUser.findOne<UserReference>({
-        citizenId: res.locals.user.CitizenID,
-      })
-      if (userRef === null)
-        return res.status(401).json(messageResponse('Token expired'))
-      const voteMp = await mongoClientVote.findMany({
+      logger.info('User validation success, defining available vote...')
+      const query = {
+        citizenId: res.locals.user.CitizenID.toString(),
+      }
+      const userRef = await mongoClientUser.findOne<UserReference>(query)
+      if (userRef === null) {
+        logger.error('User not found in reference...')
+        return res.status(401).json(messageResponse('User not found'))
+      }
+      const availableVoteTopic: VoteAvailableResponse[] = []
+      const voteMp = await mongoClientVote.findOne<VoteResult>({
         voteTopicId: VoteTopic.Mp,
         userId: userRef._id,
       })
-      return res.status(200).json(messageResponse('Has right'))
+      if (voteMp === null) {
+        logger.info('MP Vote for this user not found, adding to available...')
+        availableVoteTopic.push({
+          voteTopicId: VoteTopic.Mp,
+          voteTopicName: 'MP',
+        })
+      }
+      const voteParty = await mongoClientVote.findOne<VoteResult>({
+        voteTopicId: VoteTopic.Party,
+        userId: userRef._id,
+      })
+      if (voteParty === null) {
+        logger.info(
+          'Party Vote for this user not found, adding to available...',
+        )
+        availableVoteTopic.push({
+          voteTopicId: VoteTopic.Party,
+          voteTopicName: 'Party',
+        })
+      }
+      return res.status(200).json(availableVoteTopic)
     }
     return res.status(401).json(messageResponse('Token expired'))
   } catch (err: any) {
