@@ -40,6 +40,7 @@ export const voteHandler = async (
   )
     return res.status(401).json(errorResponse("You're not logged in"))
   let candidateInformation: CandidateResponse | PartyResponse
+  logger.info('Getting vote history...')
   const voteMp = await mongoClientVote.findOne<VoteResult>({
     voteTopicId: VoteTopic.Mp,
     userReference: userRef._id,
@@ -48,6 +49,7 @@ export const voteHandler = async (
     voteTopicId: VoteTopic.Party,
     userReference: userRef._id,
   })
+  logger.info('Verifying vote...')
   if (req.body.voteTopicId === VoteTopic.Mp) {
     if (voteMp !== null) {
       return res.status(401).json(errorResponse('You already voted this topic'))
@@ -62,6 +64,7 @@ export const voteHandler = async (
       return res.status(401).json(errorResponse('Area does not match'))
     }
     if (voteParty !== null) {
+      logger.info('Sending voted success to Government')
       // Send voted to Gov
       await ApplyVoteApiAsync(req.headers.authorization)
     }
@@ -72,6 +75,7 @@ export const voteHandler = async (
     const partyResult = await GetPartyInformation(req.body.candidateId)
     candidateInformation = partyResult.data
     if (voteMp !== null) {
+      logger.info('Sending voted success to Government')
       // Send voted to Gov
       await ApplyVoteApiAsync(req.headers.authorization)
     }
@@ -85,8 +89,9 @@ export const voteHandler = async (
     areaId: req.body.areaId ?? res.locals.user.DistricID,
     candidateInfo: candidateInformation,
   }
-
+  logger.info('Saving vote data to database')
   const response = await mongoClientVote.insertOne(voteResult)
+  logger.info('Sending vote result to EC')
   await sendVoteToEc(
     req.body.voteTopicId,
     req.body.candidateId,
@@ -112,6 +117,7 @@ export const voteNoHandler = async (
     req.headers.authorization === undefined
   )
     return res.status(401).json(errorResponse("You're not logged in"))
+  logger.info('Getting vote history...')
   const voteMp = await mongoClientVote.findOne<VoteResult>({
     voteTopicId: VoteTopic.Mp,
     userReference: userRef._id,
@@ -120,11 +126,13 @@ export const voteNoHandler = async (
     voteTopicId: VoteTopic.Party,
     userReference: userRef._id,
   })
+  logger.info('Verifying vote...')
   if (req.body.voteTopicId === VoteTopic.Mp) {
     if (voteMp !== null) {
       return res.status(401).json(errorResponse('You already voted this topic'))
     }
     if (voteParty !== null) {
+      logger.info('Sending voted success to Government')
       // Send voted to Gov
       await ApplyVoteApiAsync(req.headers.authorization)
     }
@@ -133,6 +141,7 @@ export const voteNoHandler = async (
       return res.status(401).json(errorResponse('You already voted this topic'))
     }
     if (voteMp !== null) {
+      logger.info('Sending voted success to Government')
       // Send voted to Gov
       await ApplyVoteApiAsync(req.headers.authorization)
     }
@@ -144,8 +153,9 @@ export const voteNoHandler = async (
     ballotId: req.body.ballotId,
     areaId: req.body.areaId ?? res.locals.user.DistricID,
   }
-
+  logger.info('Inserting vote data to database')
   const response = await mongoClientVote.insertOne(voteResult)
+  logger.info('Sending vote result to EC')
   await sendVoteToEc(
     req.body.voteTopicId,
     0,
@@ -158,6 +168,7 @@ export const verifyRightToVoteHandler = async (req: Request, res: Response) => {
   try {
     if (req.headers.authorization === undefined)
       return res.status(401).json('You are not logged in')
+    logger.info('Verifying right with Government...')
     const result = await ValidateUserApiAsync(req.headers.authorization)
 
     if (result === ApplyVoteApiResponseEnum.Success) {
@@ -199,6 +210,7 @@ export const verifyRightToVoteHandler = async (req: Request, res: Response) => {
     }
     return res.status(401).json(messageResponse('Token expired'))
   } catch (err: any) {
+    logger.error(err.message)
     res.status(500).json(errorResponse(err.message))
   }
 }

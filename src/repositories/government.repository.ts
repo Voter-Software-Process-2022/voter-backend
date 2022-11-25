@@ -1,6 +1,7 @@
 import { moduleHosts } from '../utils/config'
 import axios, { AxiosError, AxiosRequestConfig } from 'axios'
 import { ConnectionBetweenModuleError } from '../utils/appError'
+import logger from '../utils/logger'
 
 const GOVERNMENT_HOST = moduleHosts.government
 
@@ -59,6 +60,10 @@ export const GetUserInformationApiAsync = async (
     return response.data
   } catch (err: any) {
     if (err instanceof AxiosError) {
+      if (err.response !== undefined)
+        logger.error(
+          `Connection with Government error, ${err.response.status}: ${err.message}`,
+        )
       if (err.response?.status.toString().startsWith('4'))
         throw new Error(err.response.data.message)
     }
@@ -77,7 +82,12 @@ export const ApplyVoteApiAsync = async (
     }
     const response = await axios.post(`${GOVERNMENT_HOST}/applyvote`, config)
     return response.status
-  } catch {
+  } catch (err: any) {
+    if (err instanceof AxiosError)
+      if (err.response !== undefined)
+        logger.error(
+          `Connection with Government error, ${err.response?.status}: ${err.message}`,
+        )
     throw new ConnectionBetweenModuleError('Government')
   }
 }
@@ -93,7 +103,12 @@ export const ValidateUserApiAsync = async (
     }
     const response = await axios.get(`${GOVERNMENT_HOST}/validity`, config)
     return response.status
-  } catch {
+  } catch (err: any) {
+    if (err instanceof AxiosError)
+      if (err.response !== undefined)
+        logger.error(
+          `Connection with Government error, ${err.response?.status}: ${err.message}`,
+        )
     throw new ConnectionBetweenModuleError('Government')
   }
 }
@@ -114,6 +129,10 @@ export const AuthenticationApiAsync = async (
     return response.data
   } catch (err: any) {
     if (err instanceof AxiosError) {
+      if (err.response !== undefined)
+        logger.error(
+          `Connection with Government error, ${err.response?.status}: ${err.message}`,
+        )
       if (err.response?.status.toString().startsWith('4'))
         throw new Error(err.response.data.message)
     }
