@@ -34,7 +34,7 @@ import { object, string, TypeOf } from 'zod'
  *          type: string
  *        Nationality:
  *          type: string
- *        DictricID:
+ *        DistricID:
  *          type: number
  *    CreateUserInput:
  *      type: object
