@@ -5,6 +5,7 @@ import {
 } from '../schemas/vote.schema'
 import { Request, Response } from 'express'
 import {
+  ApplyVoteApiAsync,
   ApplyVoteApiResponseEnum,
   ValidateUserApiAsync,
 } from '../repositories/government.repository'
@@ -18,6 +19,7 @@ import {
   GetMpCandidateInfo,
   GetPartyInformation,
   PartyResponse,
+  sendVoteToEc,
 } from '../repositories/electioncommittee.repository'
 import logger from '../utils/logger'
 
@@ -31,46 +33,65 @@ export const voteHandler = async (
   const userRef = await mongoClientUser.findOne<UserReference>({
     citizenId: res.locals.user.CitizenID.toString(),
   })
-  if (userRef === null || userRef._id === undefined)
+  if (
+    userRef === null ||
+    userRef._id === undefined ||
+    req.headers.authorization === undefined
+  )
     return res.status(401).json(errorResponse("You're not logged in"))
   let candidateInformation: CandidateResponse | PartyResponse
+  const voteMp = await mongoClientVote.findOne<VoteResult>({
+    voteTopicId: VoteTopic.Mp,
+    userReference: userRef._id,
+  })
+  const voteParty = await mongoClientVote.findOne<VoteResult>({
+    voteTopicId: VoteTopic.Party,
+    userReference: userRef._id,
+  })
   if (req.body.voteTopicId === VoteTopic.Mp) {
-    const voteMp = await mongoClientVote.findOne<VoteResult>({
-      voteTopicId: VoteTopic.Mp,
-      userReference: userRef._id,
-    })
     if (voteMp !== null) {
       return res.status(401).json(errorResponse('You already voted this topic'))
     }
-    const result = await GetMpCandidateInfo(req.body.candidateId)
-    if (result.data.area_id === res.locals.user.DistricID) {
-      candidateInformation = result.data
+    const mpResult = await GetMpCandidateInfo(req.body.candidateId)
+    if (mpResult.data.area_id === res.locals.user.DistricID) {
+      candidateInformation = mpResult.data
     } else {
       logger.error(
-        `Area id does not match, selected: ${result.data.area_id}, user: ${res.locals.user.DistricID}`,
+        `Area id does not match, selected: ${mpResult.data.area_id}, user: ${res.locals.user.DistricID}`,
       )
       return res.status(401).json(errorResponse('Area does not match'))
     }
+    if (voteParty !== null) {
+      // Send voted to Gov
+      await ApplyVoteApiAsync(req.headers.authorization)
+    }
   } else if (req.body.voteTopicId === VoteTopic.Party) {
-    const voteParty = await mongoClientVote.findOne<VoteResult>({
-      voteTopicId: VoteTopic.Party,
-      userReference: userRef._id,
-    })
     if (voteParty !== null) {
       return res.status(401).json(errorResponse('You already voted this topic'))
     }
-    const result = await GetPartyInformation(req.body.candidateId)
-    candidateInformation = result.data
+    const partyResult = await GetPartyInformation(req.body.candidateId)
+    candidateInformation = partyResult.data
+    if (voteMp !== null) {
+      // Send voted to Gov
+      await ApplyVoteApiAsync(req.headers.authorization)
+    }
   } else return res.status(401).json(errorResponse('Vote topic unavailable'))
   const voteResult: VoteResult = {
     timestamp: new Date(),
     userReference: userRef._id,
+    ballotId: req.body.ballotId,
     voteTopicId: req.body.voteTopicId,
     CandidateId: req.body.candidateId,
+    areaId: req.body.areaId,
     candidateInfo: candidateInformation,
   }
 
   const response = await mongoClientVote.insertOne(voteResult)
+  await sendVoteToEc(
+    req.body.voteTopicId,
+    req.body.candidateId,
+    req.body.areaId,
+  )
   return res.status(200).json(messageResponse(response.insertedId.toString()))
 }
 
@@ -108,6 +129,7 @@ export const voteNoHandler = async (
     timestamp: new Date(),
     userReference: userRef._id,
     voteTopicId: req.body.voteTopicId,
+    ballotId: req.body.ballotId
   }
 
   const response = await mongoClientVote.insertOne(voteResult)

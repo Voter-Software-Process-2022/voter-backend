@@ -1,4 +1,4 @@
-import { number, object, TypeOf } from 'zod'
+import { number, object, string, TypeOf } from 'zod'
 
 // TODO: Implement these verification
 const verifyTopicId = async (topicId: number) => true
@@ -11,18 +11,27 @@ const verifyCandidateId = async (candidateId: number) => true
  *    VoteRequest:
  *      type: object
  *      required:
+ *        - ballotId
  *        - voteTopicId
  *        - candidateId
+ *        - areaId
  *      properties:
+ *        ballotId:
+ *          type: string
  *        voteTopicId:
  *          type: number
  *        candidateId:
  *          type: number
+ *        areaId:
+ *          type: number
  *    VoteNoRequest:
  *      type: object
  *      required:
+ *        - ballotId
  *        - voteTopicId
  *      properties:
+ *        ballotId:
+ *          type: string
  *        voteTopicId:
  *          type: number
  *    VoteAvailableResponse:
@@ -50,8 +59,10 @@ const verifyCandidateId = async (candidateId: number) => true
  */
 export const createVoteSchema = object({
   body: object({
+    ballotId: string({ required_error: 'ballotId is required' }),
     voteTopicId: number({ required_error: 'voteTopicId is required' }),
     candidateId: number({ required_error: 'candidateId is required' }),
+    areaId: number(),
   }).refine(
     async (data) =>
       (await verifyTopicId(data.voteTopicId)) &&
@@ -64,6 +75,7 @@ export const createVoteSchema = object({
 
 export const createVoteNoSchema = object({
   body: object({
+    ballotId: string({ required_error: 'ballotId is required' }),
     voteTopicId: number({ required_error: 'voteTopicId is required' }),
   }).refine(async (data) => await verifyTopicId(data.voteTopicId), {
     message: 'Topic Not Found',
