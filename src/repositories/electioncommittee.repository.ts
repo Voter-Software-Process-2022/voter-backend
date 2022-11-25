@@ -95,7 +95,7 @@ export const sendVoteToEc = async (
   const requestParams = {
     vote_topic_id: voteTopicId,
     area_id: areaId,
-    candidate_id: candidateId,
+    vote_target_id: candidateId,
   }
   const response = await axios.get<VoteResponse>(
     `${ELECTION_COMMITTEE_HOST}/vote`,
