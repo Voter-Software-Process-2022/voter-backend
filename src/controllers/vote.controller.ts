@@ -33,7 +33,11 @@ export const voteHandler = async (
   const userRef = await mongoClientUser.findOne<UserReference>({
     citizenId: res.locals.user.CitizenID.toString(),
   })
-  if (userRef === null || userRef._id === undefined || req.headers.authorization === undefined)
+  if (
+    userRef === null ||
+    userRef._id === undefined ||
+    req.headers.authorization === undefined
+  )
     return res.status(401).json(errorResponse("You're not logged in"))
   let candidateInformation: CandidateResponse | PartyResponse
   const voteMp = await mongoClientVote.findOne<VoteResult>({
@@ -82,7 +86,11 @@ export const voteHandler = async (
   }
 
   const response = await mongoClientVote.insertOne(voteResult)
-  await sendVoteToEc(req.body.voteTopicId, req.body.candidateId, req.body.areaId)
+  await sendVoteToEc(
+    req.body.voteTopicId,
+    req.body.candidateId,
+    req.body.areaId,
+  )
   return res.status(200).json(messageResponse(response.insertedId.toString()))
 }
 
