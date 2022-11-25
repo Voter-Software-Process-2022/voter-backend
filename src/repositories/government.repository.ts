@@ -105,10 +105,15 @@ export const ValidateUserApiAsync = async (
     return response.status
   } catch (err: any) {
     if (err instanceof AxiosError)
-      if (err.response !== undefined)
+      if (err.response !== undefined) {
         logger.error(
           `Connection with Government error, ${err.response?.status}: ${err.message}`,
         )
+        if (err.response.status.toString().startsWith('4')) {
+          return err.response.status
+        }
+      }
+        
     throw new ConnectionBetweenModuleError('Government')
   }
 }
