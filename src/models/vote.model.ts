@@ -15,5 +15,6 @@ export interface VoteResult extends DatabaseModel {
   userReference: ObjectId
   voteTopicId: number
   CandidateId?: number
+  areaId?: number
   candidateInfo?: CandidateResponse | PartyResponse
 }

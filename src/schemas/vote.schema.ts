@@ -13,10 +13,13 @@ const verifyCandidateId = async (candidateId: number) => true
  *      required:
  *        - voteTopicId
  *        - candidateId
+ *        - areaId
  *      properties:
  *        voteTopicId:
  *          type: number
  *        candidateId:
+ *          type: number
+ *        areaId
  *          type: number
  *    VoteNoRequest:
  *      type: object
@@ -52,6 +55,7 @@ export const createVoteSchema = object({
   body: object({
     voteTopicId: number({ required_error: 'voteTopicId is required' }),
     candidateId: number({ required_error: 'candidateId is required' }),
+    areaId: number()
   }).refine(
     async (data) =>
       (await verifyTopicId(data.voteTopicId)) &&

@@ -75,7 +75,7 @@ export const ApplyVoteApiAsync = async (
         Authorization: token,
       },
     }
-    const response = await axios.post(`${GOVERNMENT_HOST}/vote/apply`, config)
+    const response = await axios.post(`${GOVERNMENT_HOST}/applyvote`, config)
     return response.status
   } catch {
     throw new ConnectionBetweenModuleError('Government')
