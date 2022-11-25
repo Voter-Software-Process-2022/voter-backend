@@ -70,13 +70,19 @@ const verifyCandidateId = async (candidateId: number) => true
  *    GetAllBallotResponse:
  *      type: object
  *      properties:
- *        id:
+ *        _id:
+ *          type: string
+ *        timestamp:
+ *          type: string
+ *        userReference:
+ *          type: string
+ *        ballotId:
+ *          type: string
+ *        voteTopicId:
  *          type: number
- *        party_id:
+ *        candidateId:
  *          type: number
- *        candidate_id:
- *          type: number
- *        area_id:
+ *        areaIdd:
  *          type: number
  */
 export const createVoteSchema = object({

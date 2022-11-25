@@ -252,8 +252,12 @@ export const getAllBallotHandler = async (
   res: Response,
 ) => {
   try {
-    const response = await GetAllBallots(req.body.voteTopicId, req.body.areaId)
-    return res.status(200).json(response.data)
+    const query = {
+      voteTopicId: req.body.voteTopicId,
+      areaId: req.body.areaId,
+    }
+    const response = await mongoClientVote.findMany<VoteResult>(query)
+    return res.status(200).json(response)
   } catch (err: any) {
     logger.error(err.message)
     return res.status(500).json(errorResponse('Connection to EC error'))
