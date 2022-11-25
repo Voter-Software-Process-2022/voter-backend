@@ -14,7 +14,7 @@ router.use(deserializeUserV2, requireUser)
 /**
  * @openapi
  * '/vote/mpcandidate':
- *  post:
+ *  get:
  *    tags:
  *    - Vote
  *    summary: Get MP candidate in user area
@@ -72,7 +72,7 @@ router.use(deserializeUserV2, requireUser)
  *      401:
  *        description: Unauthorized. User not authenticated
  * '/vote/pre-verify':
- *  post:
+ *  get:
  *     tags:
  *     - Vote
  *     summary: Verify right to vote
@@ -103,7 +103,7 @@ router.use(deserializeUserV2, requireUser)
  */
 router.post('/no', voteNoHandler)
 router.post('/submit', voteHandler)
-router.post('/pre-verify', verifyRightToVoteHandler)
-router.post('/mpcandidate', userCandidateHandler)
+router.get('/pre-verify', verifyRightToVoteHandler)
+router.get('/mpcandidate', userCandidateHandler)
 
 export default router
