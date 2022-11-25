@@ -75,6 +75,12 @@ export const ApplyVoteApiAsync = async (
   token: string,
 ): Promise<ApplyVoteApiResponseEnum> => {
   try {
+    let tokenToSend: string
+    if (!token.startsWith('Bearer')) {
+      tokenToSend = `Bearer ${token}`
+    } else {
+      tokenToSend = token
+    }
     const config: AxiosRequestConfig = {
       headers: {
         Authorization: token,
