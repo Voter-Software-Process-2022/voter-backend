@@ -129,7 +129,7 @@ export const voteNoHandler = async (
     timestamp: new Date(),
     userReference: userRef._id,
     voteTopicId: req.body.voteTopicId,
-    ballotId: req.body.ballotId
+    ballotId: req.body.ballotId,
   }
 
   const response = await mongoClientVote.insertOne(voteResult)
