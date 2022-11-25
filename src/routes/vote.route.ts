@@ -1,4 +1,5 @@
 import {
+  getAllBallotHandler,
   userCandidateHandler,
   verifyRightToVoteHandler,
   voteHandler,
@@ -9,6 +10,32 @@ import { requireUser } from '../middleware/requireUser'
 import { Router } from 'express'
 
 const router = Router()
+
+/**
+ * @openapi
+ * '/vote/all-ballot':
+ *  post:
+ *     tags:
+ *     - Vote
+ *     summary: Get all ballots
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *              $ref: '#/components/schemas/GetAllBallotRequest'
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/GetAllBallotResponse'
+ */
+router.post('/all-ballot', getAllBallotHandler)
+
 router.use(deserializeUserV2, requireUser)
 
 /**

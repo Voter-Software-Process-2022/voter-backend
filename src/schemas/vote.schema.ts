@@ -57,6 +57,27 @@ const verifyCandidateId = async (candidateId: number) => true
  *        party_id:
  *          type: number
  *          required: false
+ *    GetAllBallotRequest:
+ *      type: object
+ *      required:
+ *        - voteTopicId
+ *        - areaId
+ *      properties:
+ *        voteTopicId:
+ *          type: number
+ *        areaId:
+ *          type: number
+ *    GetAllBallotResponse:
+ *      type: object
+ *      properties:
+ *        id:
+ *          type: number
+ *        party_id:
+ *          type: number
+ *        candidate_id:
+ *          type: number
+ *        area_id:
+ *          type: number
  */
 export const createVoteSchema = object({
   body: object({
@@ -87,6 +108,18 @@ export const createVoteNoSchema = object({
 export interface VoteAvailableResponse {
   voteTopicId: number
   voteTopicName: string
+}
+
+export interface AllBallotResponse {
+  id: number
+  candidate_id?: number
+  party_id?: number
+  area_id: number
+}
+
+export interface AllBallotRequest {
+  voteTopicId: number
+  areaId: number
 }
 
 export type CreateVoteRequest = TypeOf<typeof createVoteSchema>['body']

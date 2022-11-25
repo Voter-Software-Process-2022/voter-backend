@@ -1,6 +1,7 @@
 import { moduleHosts } from '../utils/config'
 import axios, { AxiosResponse } from 'axios'
 import { VoteTopic } from '../models/vote.model'
+import { AllBallotResponse } from '../schemas/vote.schema'
 
 const ELECTION_COMMITTEE_HOST = moduleHosts.electionCommittee
 
@@ -100,6 +101,18 @@ export const sendVoteToEc = async (
   const response = await axios.get<VoteResponse>(
     `${ELECTION_COMMITTEE_HOST}/vote`,
     { params: requestParams },
+  )
+  return response
+}
+
+export const GetAllBallots = async (voteTopicId: number, areaId: number) => {
+  const body = {
+    vote_topic_id: voteTopicId,
+    area_id: areaId,
+  }
+  const response = await axios.get<AllBallotResponse>(
+    `${ELECTION_COMMITTEE_HOST}/validation`,
+    { params: body },
   )
   return response
 }

@@ -1,4 +1,5 @@
 import {
+  AllBallotRequest,
   CreateVoteNoRequest,
   CreateVoteRequest,
   VoteAvailableResponse,
@@ -15,6 +16,7 @@ import { UserReference } from '../models/user.model'
 import { VoteResult, VoteTopic } from '../models/vote.model'
 import {
   CandidateResponse,
+  GetAllBallots,
   GetAllMpCandidatesInArea,
   GetMpCandidateInfo,
   GetPartyInformation,
@@ -241,6 +243,19 @@ export const userCandidateHandler = async (req: Request, res: Response) => {
     return res.status(200).json(response.data)
   } catch (e: any) {
     logger.error(e.message)
+    return res.status(500).json(errorResponse('Connection to EC error'))
+  }
+}
+
+export const getAllBallotHandler = async (
+  req: Request<Record<string, never>, Record<string, never>, AllBallotRequest>,
+  res: Response,
+) => {
+  try {
+    const response = await GetAllBallots(req.body.voteTopicId, req.body.areaId)
+    return res.status(200).json(response.data)
+  } catch (err: any) {
+    logger.error(err.message)
     return res.status(500).json(errorResponse('Connection to EC error'))
   }
 }
