@@ -79,6 +79,7 @@ export const voteHandler = async (
   const voteResult: VoteResult = {
     timestamp: new Date(),
     userReference: userRef._id,
+    ballotId: req.body.ballotId,
     voteTopicId: req.body.voteTopicId,
     CandidateId: req.body.candidateId,
     areaId: req.body.areaId,
