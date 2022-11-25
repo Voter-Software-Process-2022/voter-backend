@@ -82,7 +82,7 @@ export const voteHandler = async (
     ballotId: req.body.ballotId,
     voteTopicId: req.body.voteTopicId,
     CandidateId: req.body.candidateId,
-    areaId: req.body.areaId,
+    areaId: req.body.areaId ?? res.locals.user.DistricID,
     candidateInfo: candidateInformation,
   }
 
@@ -90,7 +90,7 @@ export const voteHandler = async (
   await sendVoteToEc(
     req.body.voteTopicId,
     req.body.candidateId,
-    req.body.areaId,
+    req.body.areaId ?? res.locals.user.DistricID,
   )
   return res.status(200).json(messageResponse(response.insertedId.toString()))
 }
@@ -142,10 +142,15 @@ export const voteNoHandler = async (
     userReference: userRef._id,
     voteTopicId: req.body.voteTopicId,
     ballotId: req.body.ballotId,
+    areaId: req.body.areaId ?? res.locals.user.DistricID,
   }
 
   const response = await mongoClientVote.insertOne(voteResult)
-  await sendVoteToEc(req.body.voteTopicId, 0, req.body.areaId)
+  await sendVoteToEc(
+    req.body.voteTopicId,
+    0,
+    req.body.areaId ?? res.locals.user.DistricID,
+  )
   return res.status(200).json(messageResponse(response.insertedId.toString()))
 }
 
