@@ -13,7 +13,7 @@ export enum VoteTopic {
 export interface VoteResult extends DatabaseModel {
   timestamp: Date
   userReference: ObjectId
-  ballotId: string,
+  ballotId: string
   voteTopicId: number
   CandidateId?: number
   areaId?: number
