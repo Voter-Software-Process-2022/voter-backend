@@ -14,7 +14,6 @@ const verifyCandidateId = async (candidateId: number) => true
  *        - ballotId
  *        - voteTopicId
  *        - candidateId
- *        - areaId
  *      properties:
  *        ballotId:
  *          type: string
@@ -33,6 +32,8 @@ const verifyCandidateId = async (candidateId: number) => true
  *        ballotId:
  *          type: string
  *        voteTopicId:
+ *          type: number
+ *        areaId:
  *          type: number
  *    VoteAvailableResponse:
  *      type: object
@@ -77,6 +78,7 @@ export const createVoteNoSchema = object({
   body: object({
     ballotId: string({ required_error: 'ballotId is required' }),
     voteTopicId: number({ required_error: 'voteTopicId is required' }),
+    areaId: number(),
   }).refine(async (data) => await verifyTopicId(data.voteTopicId), {
     message: 'Topic Not Found',
   }),
