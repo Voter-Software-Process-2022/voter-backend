@@ -53,15 +53,15 @@ class MongoDbClient {
   ) {
     const client = await this.getInstance()
     try {
-      logger.debug("Getting database...")
+      logger.debug('Getting database...')
       const database = client.db(this.databaseName)
-      logger.debug("Getting collection...")
+      logger.debug('Getting collection...')
       const collection = database.collection(this.collectionName)
-      logger.debug("Getting data...")
+      logger.debug('Getting data...')
       const data = await collection.find<T>(query, options).toArray()
-      logger.debug("Got data, closing connection...")
+      logger.debug('Got data, closing connection...')
       await client.close()
-      logger.debug("Closed connection, returning...")
+      logger.debug('Closed connection, returning...')
       return data
     } catch (e) {
       logger.error(`Error...Disconnecting`)
