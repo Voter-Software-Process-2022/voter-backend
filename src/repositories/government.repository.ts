@@ -80,7 +80,11 @@ export const ApplyVoteApiAsync = async (
         Authorization: token,
       },
     }
-    const response = await axios.post(`${GOVERNMENT_HOST}/applyvote`, config)
+    const response = await axios.post(
+      `${GOVERNMENT_HOST}/applyvote`,
+      { avoidAxiosError: 'Yes' },
+      config,
+    )
     return response.status
   } catch (err: any) {
     if (err instanceof AxiosError)
@@ -113,7 +117,7 @@ export const ValidateUserApiAsync = async (
           return err.response.status
         }
       }
-        
+
     throw new ConnectionBetweenModuleError('Government')
   }
 }
