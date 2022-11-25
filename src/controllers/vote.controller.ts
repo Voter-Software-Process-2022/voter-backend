@@ -106,23 +106,35 @@ export const voteNoHandler = async (
   const userRef = await mongoClientUser.findOne<UserReference>({
     citizenId: res.locals.user.CitizenID.toString(),
   })
-  if (userRef === null || userRef._id === undefined)
+  if (
+    userRef === null ||
+    userRef._id === undefined ||
+    req.headers.authorization === undefined
+  )
     return res.status(401).json(errorResponse("You're not logged in"))
+  const voteMp = await mongoClientVote.findOne<VoteResult>({
+    voteTopicId: VoteTopic.Mp,
+    userReference: userRef._id,
+  })
+  const voteParty = await mongoClientVote.findOne<VoteResult>({
+    voteTopicId: VoteTopic.Party,
+    userReference: userRef._id,
+  })
   if (req.body.voteTopicId === VoteTopic.Mp) {
-    const voteMp = await mongoClientVote.findOne<VoteResult>({
-      voteTopicId: VoteTopic.Mp,
-      userReference: userRef._id,
-    })
     if (voteMp !== null) {
       return res.status(401).json(errorResponse('You already voted this topic'))
     }
+    if (voteParty !== null) {
+      // Send voted to Gov
+      await ApplyVoteApiAsync(req.headers.authorization)
+    }
   } else if (req.body.voteTopicId === VoteTopic.Party) {
-    const voteParty = await mongoClientVote.findOne<VoteResult>({
-      voteTopicId: VoteTopic.Party,
-      userReference: userRef._id,
-    })
     if (voteParty !== null) {
       return res.status(401).json(errorResponse('You already voted this topic'))
+    }
+    if (voteMp !== null) {
+      // Send voted to Gov
+      await ApplyVoteApiAsync(req.headers.authorization)
     }
   } else return res.status(401).json(errorResponse('Vote topic unavailable'))
   const voteResult: VoteResult = {
@@ -133,6 +145,7 @@ export const voteNoHandler = async (
   }
 
   const response = await mongoClientVote.insertOne(voteResult)
+  await sendVoteToEc(req.body.voteTopicId, 0, req.body.areaId)
   return res.status(200).json(messageResponse(response.insertedId.toString()))
 }
 
