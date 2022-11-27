@@ -136,3 +136,19 @@ describe('Test gov /user/info', () => {
     )
   });
 })
+
+describe('Test gov /validity', () => {
+  it('GET / => request with valid TOKEN', async () => {
+    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
+      CitizenID: "2222222222222",
+      lazerID: "JT9999999998"
+    })
+    expect(res.status).toBe(200)
+    expect(res.error).toBe(false)
+    expect(res.body.token).not.toBeNull()
+
+    const res1 = await request(`${GOVERNMENT_HOST}`).get('/validity').set('Authorization', `Bearer ${res.body.token}`)
+    expect(res1.status).toBe(200)
+    expect(res1.error).toBe(false)
+  })
+})
