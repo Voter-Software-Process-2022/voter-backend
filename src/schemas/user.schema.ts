@@ -19,6 +19,23 @@ import { object, string, TypeOf } from 'zod'
  *          type: string
  *        updatedAt:
  *          type: string
+ *    UserInformation:
+ *      type: object
+ *      properties:
+ *        CitizenID:
+ *          type: number
+ *        LazerID:
+ *          type: string
+ *        Name:
+ *          type: string
+ *        Lastname:
+ *          type: string
+ *        Birthday:
+ *          type: string
+ *        Nationality:
+ *          type: string
+ *        DistricID:
+ *          type: number
  *    CreateUserInput:
  *      type: object
  *      required:
@@ -50,7 +67,7 @@ import { object, string, TypeOf } from 'zod'
  *          type: string
  *        user:
  *          type: object
- *          $ref: '#/components/schemas/User'
+ *          $ref: '#/components/schemas/UserInformation'
  *    LoginUserInput:
  *      type: object
  *      required:

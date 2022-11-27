@@ -30,7 +30,7 @@ class MongoDbClient {
   }
 
   async findOne<T extends Document>(
-    query: DatabaseModel,
+    query: Record<string, any>,
     options?: FindOptions<Document>,
   ) {
     const client = await this.getInstance()
@@ -48,15 +48,20 @@ class MongoDbClient {
   }
 
   async findMany<T extends Document>(
-    query: DatabaseModel,
+    query: Record<string, any>,
     options?: FindOptions<Document>,
   ) {
     const client = await this.getInstance()
     try {
+      logger.debug('Getting database...')
       const database = client.db(this.databaseName)
+      logger.debug('Getting collection...')
       const collection = database.collection(this.collectionName)
+      logger.debug('Getting data...')
       const data = await collection.find<T>(query, options).toArray()
+      logger.debug('Got data, closing connection...')
       await client.close()
+      logger.debug('Closed connection, returning...')
       return data
     } catch (e) {
       logger.error(`Error...Disconnecting`)
@@ -159,7 +164,7 @@ class MongoDbClient {
     }
   }
 
-  async deleteOne(query: DatabaseModel) {
+  async deleteOne(query: Record<string, any>) {
     const client = await this.getInstance()
     try {
       const database = client.db(this.databaseName)

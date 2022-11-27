@@ -1,16 +1,61 @@
 import {
+  getAllBallotHandler,
+  userCandidateHandler,
   verifyRightToVoteHandler,
   voteHandler,
+  voteNoHandler,
 } from '../controllers/vote.controller'
-import { deserializeUser } from '../middleware/deserializeUser'
+import { deserializeUserV2 } from '../middleware/deserializeUser'
 import { requireUser } from '../middleware/requireUser'
 import { Router } from 'express'
 
 const router = Router()
-router.use(deserializeUser, requireUser)
 
 /**
  * @openapi
+ * '/vote/all-ballot':
+ *  post:
+ *     tags:
+ *     - Vote
+ *     summary: Get all ballots
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *           schema:
+ *              $ref: '#/components/schemas/GetAllBallotRequest'
+ *     responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/GetAllBallotResponse'
+ */
+router.post('/all-ballot', getAllBallotHandler)
+
+router.use(deserializeUserV2, requireUser)
+
+/**
+ * @openapi
+ * '/vote/mpcandidate':
+ *  get:
+ *    tags:
+ *    - Vote
+ *    summary: Get MP candidate in user area
+ *    security:
+ *       - bearerAuth: []
+ *    responses:
+ *      200:
+ *        description: Success
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/CandidateResponse'
  * '/vote/submit':
  *  post:
  *     tags:
@@ -32,8 +77,29 @@ router.use(deserializeUser, requireUser)
  *        description: Bad Request. User already voted this topic
  *      401:
  *        description: Unauthorized. User not authenticated
- * '/vote/pre-verify':
+ * '/vote/no':
  *  post:
+ *     tags:
+ *     - Vote
+ *     summary: Process Vote No
+ *     description: Process vote No to topic
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *      required: true
+ *      content:
+ *        application/json:
+ *          schema:
+ *            $ref: '#/components/schemas/VoteNoRequest'
+ *     responses:
+ *      200:
+ *        description: Success
+ *      400:
+ *        description: Bad Request. User already voted this topic
+ *      401:
+ *        description: Unauthorized. User not authenticated
+ * '/vote/pre-verify':
+ *  get:
  *     tags:
  *     - Vote
  *     summary: Verify right to vote
@@ -42,13 +108,29 @@ router.use(deserializeUser, requireUser)
  *       - bearerAuth: []
  *     responses:
  *      200:
- *        description: Vote Success
+ *        description: Has right
+ *        content:
+ *          application/json:
+ *            schema:
+ *              type: array
+ *              items:
+ *                $ref: '#/components/schemas/VoteAvailableResponse'
  *      400:
  *        description: Bad Request.
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ErrorResponse'
  *      401:
  *        description: Unauthorized. User not authenticated
+ *        content:
+ *          application/json:
+ *            schema:
+ *              $ref: '#/components/schemas/ErrorResponse'
  */
+router.post('/no', voteNoHandler)
 router.post('/submit', voteHandler)
-router.post('/pre-verify', verifyRightToVoteHandler)
+router.get('/pre-verify', verifyRightToVoteHandler)
+router.get('/mpcandidate', userCandidateHandler)
 
 export default router

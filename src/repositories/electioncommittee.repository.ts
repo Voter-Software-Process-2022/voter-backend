@@ -1,6 +1,7 @@
 import { moduleHosts } from '../utils/config'
 import axios, { AxiosResponse } from 'axios'
 import { VoteTopic } from '../models/vote.model'
+import { AllBallotResponse } from '../schemas/vote.schema'
 
 const ELECTION_COMMITTEE_HOST = moduleHosts.electionCommittee
 
@@ -8,8 +9,8 @@ export interface CandidateResponse {
   id: number
   name: string
   pictureUrl: string
-  areaId: number
-  partyId: number
+  area_id: number
+  party_id: number
 }
 
 export interface PartyResponse {
@@ -44,20 +45,36 @@ export const GetAllMpCandidates = async (): Promise<
   return response
 }
 
+export const GetAllMpCandidatesInArea = async (areaId: number) => {
+  const response = await axios.get<CandidateResponse[]>(
+    `${ELECTION_COMMITTEE_HOST}/candidates/area/${areaId}`,
+  )
+  return response
+}
+
 export const GetMpCandidateInfo = async (
   id: number,
 ): Promise<AxiosResponse<CandidateResponse>> => {
   const response = await axios.get<CandidateResponse>(
-    `${ELECTION_COMMITTEE_HOST}/candidate/${id}`,
+    `${ELECTION_COMMITTEE_HOST}/candidates/${id}`,
   )
   return response
 }
 
 export const GetAllParties = async (): Promise<
-  AxiosResponse<PartyResponse>
+  AxiosResponse<PartyResponse[]>
 > => {
-  const response = await axios.get<PartyResponse>(
+  const response = await axios.get<PartyResponse[]>(
     `${ELECTION_COMMITTEE_HOST}/party`,
+  )
+  return response
+}
+
+export const GetPartyInformation = async (
+  partyId: number,
+): Promise<AxiosResponse<PartyResponse>> => {
+  const response = await axios.get<PartyResponse>(
+    `${ELECTION_COMMITTEE_HOST}/party/${partyId}`,
   )
   return response
 }
@@ -65,12 +82,8 @@ export const GetAllParties = async (): Promise<
 export const GetAllPartyMembers = async (
   partyId: number,
 ): Promise<AxiosResponse<CandidateResponse[]>> => {
-  const requestParams = {
-    party_id: partyId,
-  }
   const response = await axios.get<CandidateResponse[]>(
-    `${ELECTION_COMMITTEE_HOST}/party/member`,
-    { params: requestParams },
+    `${ELECTION_COMMITTEE_HOST}/party/member/${partyId}`,
   )
   return response
 }
@@ -83,11 +96,23 @@ export const sendVoteToEc = async (
   const requestParams = {
     vote_topic_id: voteTopicId,
     area_id: areaId,
-    candidate_id: candidateId,
+    vote_target_id: candidateId,
   }
   const response = await axios.get<VoteResponse>(
     `${ELECTION_COMMITTEE_HOST}/vote`,
     { params: requestParams },
+  )
+  return response
+}
+
+export const GetAllBallots = async (voteTopicId: number, areaId: number) => {
+  const body = {
+    vote_topic_id: voteTopicId,
+    area_id: areaId,
+  }
+  const response = await axios.get<AllBallotResponse>(
+    `${ELECTION_COMMITTEE_HOST}/validation`,
+    { params: body },
   )
   return response
 }

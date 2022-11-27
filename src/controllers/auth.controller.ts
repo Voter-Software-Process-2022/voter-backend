@@ -5,20 +5,20 @@ import {
   LoginUserInput,
   LoginUserInputV2,
 } from '../schemas/user.schema'
-import {
-  createUser,
-  findUser,
-  loginWithGov,
-  signToken,
-} from '../services/user.service'
+import { createUser, findUser, signToken } from '../services/user.service'
 import logger from '../utils/logger'
 import { errorResponse } from '../schemas/resposne.schema'
 import { LoginError } from '../utils/appError'
+import { AuthenticationApiAsync } from '../repositories/government.repository'
+import MongoDbClient from '../repositories/mongodb.repository'
+import { UserReference } from '../models/user.model'
 
 // Exclude this fields from the response
 export const excludedFields = ['password']
 
 const accessTokenExpiresIn: number = appConfig.accessTokenExpiresIn
+
+const mongoClient = new MongoDbClient('auth', 'user_ref')
 
 // Cookie options
 const accessTokenCookieOptions: CookieOptions = {
@@ -108,7 +108,27 @@ export const loginHandlerV2 = async (
         })
       else throw new LoginError()
     }
-    const response = await loginWithGov(req.body.citizenId, req.body.laserId)
+    const response = await AuthenticationApiAsync(
+      req.body.citizenId,
+      req.body.laserId,
+    )
+    try {
+      logger.info('Searching for user reference...')
+      const currentUser = await mongoClient.findOne<UserReference>({
+        citizenId: req.body.citizenId,
+      })
+      if (currentUser === null) {
+        logger.info('User refernce not found, creating...')
+        const userRerference: UserReference = {
+          citizenId: req.body.citizenId,
+        }
+        await mongoClient.insertOne(userRerference)
+        logger.info('User reference created...')
+      }
+    } catch (err: any) {
+      logger.error(err.message)
+    }
+
     return res.status(200).json(response)
   } catch (e: any) {
     if (e instanceof LoginError) return res.status(400).json(null)

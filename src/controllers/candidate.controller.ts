@@ -57,3 +57,8 @@ export const candidateHandler = async (req: Request, res: Response) => {
     return res.status(400).json(null)
   }
 }
+
+export const partyMemberHandler = async (req: Request, res: Response) => {
+  const response = await GetAllPartyMembers(Number(req.params.partyId))
+  return res.status(200).json(response.data)
+}
