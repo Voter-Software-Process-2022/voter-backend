@@ -10,8 +10,8 @@ const GOVERNMENT_HOST = moduleHosts.government
 describe('Test gov /auth/login', () => {
   it('POST / => login with valid user', async () => {
     const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
-      CitizenID: "1234567891234",
-      lazerID: "1234AB"
+      CitizenID: "2222222222222",
+      lazerID: "JT9999999998"
     })
     expect(res.status).toBe(200)
     expect(res.error).toBe(false)
@@ -48,7 +48,7 @@ describe('Test gov /auth/login', () => {
 
   it('POST / => login with invalid user lazerID', async () => {
     const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
-      CitizenID: "1234567891234",
+      CitizenID: "2222222222222",
       lazerID: "1234ABC"
     })
     expect(res.status).toBe(401)
@@ -76,7 +76,7 @@ describe('Test gov /auth/login', () => {
 
   it('POST / => login with empty lazerID', async () => {
     const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
-      CitizenID: "1234567891234",
+      CitizenID: "2222222222222",
       lazerID: ""
     })
     expect(res.status).toBe(401)
@@ -103,28 +103,36 @@ describe('Test gov /auth/login', () => {
   });
 })
 
-describe('Test /auth/login/v2', () => {
-  it('POST / => login with valid user', async () => {
-    
-  }) 
-  
-  it('POST / => login with invalid user, CitizenID exceed 13 digits', async () => {
+describe('Test gov /user/info', () => {
+  it('GET / => request with valid TOKEN', async () => {
+    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
+      CitizenID: "2222222222222",
+      lazerID: "JT9999999998"
+    })
+    expect(res.status).toBe(200)
+    expect(res.error).toBe(false)
+    expect(res.body.token).not.toBeNull()
 
-  })
-  
-  it('POST / => login with invalid user, CitizenID contain string', async () => {
+    const res1 = await request(`${GOVERNMENT_HOST}`).get('/user/info/').set('Authorization', `Bearer ${res.body.token}`)
+    expect(res1.status).toBe(200)
+    expect(res1.error).toBe(false)
+    expect(res.body.CitizenID).not.toBeNull()
+    expect(res.body.LazerID).not.toBeNull()
+    expect(res.body.Name).not.toBeNull()
+    expect(res.body.Lastname).not.toBeNull()
+    expect(res.body.Birthday).not.toBeNull()
+    expect(res.body.Nationality).not.toBeNull()
+    expect(res.body.DistricID).not.toBeNull()
+  });
 
-  }) 
-
-  it('POST / => login with invalid user, CitizenID field is empty', async () => {
-
-  }) 
-
-  it('POST / => login with invalid user, LaserID', async () => {
-
-  }) 
-
-  it('POST / => login with invalid user, LaserID field is empty', async () => {
-
-  }) 
+  it('GET / => request with invalid TOKEN', async () => {
+    const res = await request(`${GOVERNMENT_HOST}`).get('/user/info/').set('Authorization', `Bearer abc`)
+    expect(res.status).toBe(401)
+    expect(res.error).not.toBe(false)
+    expect(res.body).toEqual(
+      expect.objectContaining({
+          message: "Can't authenticate with this citizenID and lazerID"
+      })
+    )
+  });
 })
