@@ -170,11 +170,24 @@ describe('Test ec /vote', () => {
     it('GET / => send proper ballot', async () => {
         const res = await request(`${ELECTION_COMMITTEE_HOST}`)
         .get(`/vote?vote_topic_id=${mockBallot1.vote_topic_id}&area_id=${mockBallot1.area_id}&vote_target_id=${mockBallot1.vote_target_id}`)
+        console.log(res, res.body)
         
         
     })
 })
 
 describe('Test ec /validation', () => {
+    it('GET / => send proper ballot', async () => {
+        const res = await request(`${ELECTION_COMMITTEE_HOST}`)
+        .get(`/validation?vote_topic_id=${mockBallot1.vote_topic_id}&area_id=${mockBallot1.area_id}`)
+        for (let i=0; i<res.body.length; i++) {
+            const indexBallot = res.body[i]
+            expect(indexBallot.vote_topic_id).not.toBeNull()
+            expect(indexBallot.area_id).not.toBeNull()
+            expect(indexBallot.vote_target_id).not.toBeNull()
 
+            expect(indexBallot.vote_topic_id).toBe(mockBallot1.vote_topic_id)
+            expect(indexBallot.area_id).toBe(mockBallot1.area_id)
+        }
+    })
 })
