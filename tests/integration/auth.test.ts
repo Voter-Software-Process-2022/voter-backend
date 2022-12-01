@@ -4,15 +4,19 @@ import app from '../../src/app'
 
 const GOVERNMENT_HOST = moduleHosts.government
 
+const mockUserPropWithValidId = {
+  CitizenID: "2222222222222",
+  lazerID: "JT9999999998"
+}
+
 // Test /auth/register
 // Test /auth/login
 
 describe('Test gov /auth/login', () => {
   it('POST / => login with valid user', async () => {
-    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
-      CitizenID: "2222222222222",
-      lazerID: "JT9999999998"
-    })
+    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send(
+      mockUserPropWithValidId
+      )
     expect(res.status).toBe(200)
     expect(res.error).toBe(false)
     expect(res.body.token).not.toBeNull()
@@ -105,10 +109,9 @@ describe('Test gov /auth/login', () => {
 
 describe('Test gov /user/info', () => {
   it('GET / => request with valid TOKEN', async () => {
-    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
-      CitizenID: "2222222222222",
-      lazerID: "JT9999999998"
-    })
+    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send(
+      mockUserPropWithValidId
+    )
     expect(res.status).toBe(200)
     expect(res.error).toBe(false)
     expect(res.body.token).not.toBeNull()
@@ -139,10 +142,9 @@ describe('Test gov /user/info', () => {
 
 describe('Test gov /validity', () => {
   it('GET / => request with valid TOKEN', async () => {
-    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send({
-      CitizenID: "2222222222222",
-      lazerID: "JT9999999998"
-    })
+    const res = await request(`${GOVERNMENT_HOST}`).post('/auth/login/').send(
+      mockUserPropWithValidId
+    )
     expect(res.status).toBe(200)
     expect(res.error).toBe(false)
     expect(res.body.token).not.toBeNull()
