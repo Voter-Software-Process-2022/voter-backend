@@ -166,16 +166,6 @@ describe('Test ec /party/member/{partyId}', () => {
       });
 })
 
-describe('Test ec /vote', () => {
-    it('GET / => send proper ballot', async () => {
-        const res = await request(`${ELECTION_COMMITTEE_HOST}`)
-        .get(`/vote?vote_topic_id=${mockBallot1.vote_topic_id}&area_id=${mockBallot1.area_id}&vote_target_id=${mockBallot1.vote_target_id}`)
-        console.log(res, res.body)
-        
-        
-    })
-})
-
 describe('Test ec /validation', () => {
     it('GET / => send proper ballot', async () => {
         const res = await request(`${ELECTION_COMMITTEE_HOST}`)
