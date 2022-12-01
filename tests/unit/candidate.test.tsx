@@ -11,6 +11,18 @@ const validCandidatesId = 44
 
 const validPartyId = 1
 
+const mockBallot1 = {
+    vote_topic_id: 1,
+    area_id: 1,
+    vote_target_id: 44,
+}
+
+const mockBallot2 = {
+    vote_topic_id: 1,
+    area_id: 1,
+    vote_target_id: 14,
+}
+
 describe('Test ec /candidates', () => {
     it('GET / => get all candidates info', async () => {
         const res = await request(`${ELECTION_COMMITTEE_HOST}`).get('/candidates')
@@ -155,7 +167,12 @@ describe('Test ec /party/member/{partyId}', () => {
 })
 
 describe('Test ec /vote', () => {
-
+    it('GET / => send proper ballot', async () => {
+        const res = await request(`${ELECTION_COMMITTEE_HOST}`)
+        .get(`/vote?vote_topic_id=${mockBallot1.vote_topic_id}&area_id=${mockBallot1.area_id}&vote_target_id=${mockBallot1.vote_target_id}`)
+        
+        
+    })
 })
 
 describe('Test ec /validation', () => {
