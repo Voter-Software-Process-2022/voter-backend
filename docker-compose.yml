@@ -1,0 +1,16 @@
+version: "3"
+services:
+ app:
+  container_name: app
+  build: .
+  environment:
+  - IS_DOCKER=true
+  links:
+  - mongo
+ mongo:
+  container_name: mongo
+  image: mongo
+  volumes:
+  - ./data:/data/db
+  ports:
+  - '27017:27017'
