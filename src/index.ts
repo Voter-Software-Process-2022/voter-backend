@@ -14,6 +14,5 @@ server.listen(PORT, async () => {
   logger.info(`Server listening on port ${PORT}.`)
   // await connectDB()
   await connectRedis()
-  if (process.env.IS_DOCKER === null)
-    logger.info('Docker')
+  if (process.env.IS_DOCKER === null) logger.info('Docker')
 })
