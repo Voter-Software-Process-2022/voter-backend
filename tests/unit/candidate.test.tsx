@@ -167,7 +167,7 @@ describe('Test ec /party/member/{partyId}', () => {
 })
 
 describe('Test ec /validation', () => {
-    it('GET / => send proper ballot', async () => {
+    it('GET / => get all ballot in area', async () => {
         const res = await request(`${ELECTION_COMMITTEE_HOST}`)
         .get(`/validation?vote_topic_id=${mockBallot1.vote_topic_id}&area_id=${mockBallot1.area_id}`)
         for (let i=0; i<res.body.length; i++) {
@@ -176,7 +176,6 @@ describe('Test ec /validation', () => {
             expect(indexBallot.area_id).not.toBeNull()
             expect(indexBallot.vote_target_id).not.toBeNull()
 
-            expect(indexBallot.vote_topic_id).toBe(mockBallot1.vote_topic_id)
             expect(indexBallot.area_id).toBe(mockBallot1.area_id)
         }
     })
