@@ -36,6 +36,22 @@ jobs:
         run: yarn install --frozen-lockfile
       - name: Execute Unit Test
         run: yarn test:unit
+  test-integration:
+    name: Integration Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up NodeJS environment
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: '.nvmrc'
+      - name: Install yarn
+        run: npm install --global yarn
+      - name: Install Dependencies
+        run: yarn install --frozen-lockfile
+      - name: Execute Unit Test
+        run: yarn test:integration
   coverage:
     name: Coverage Test
     runs-on: ubuntu-latest

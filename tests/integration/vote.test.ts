@@ -54,6 +54,7 @@ const isDocker = (condition: boolean | undefined | string) => {
   if (condition === null) return false
   return Boolean(condition) ? true : false
 }
+
 jest.mock('../../src/repositories/mongodb.repository', () => {
   const originalModule = jest.requireActual(
     '../../src/repositories/mongodb.repository',
